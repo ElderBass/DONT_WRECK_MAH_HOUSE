@@ -109,6 +109,7 @@
 * Prompt user for start date and end date
     * Will need a helper method in View for this, converting the strings the user passes in to LocalDates
     * Need to pass these dates into a ReservationService method that will validate that this reservation does not overlap with any others
+        * I will refer to a previous LocalDate exercise on how to accomplish this
         * Thus will need a validate Reservation method or two with this
     
     Estimated Time: 40 minutes
@@ -145,6 +146,8 @@
   
 * Move to Domain and set up the update method in there, which will return a result
     * Will need to validate fields again as per the assessment requirements
+        * Display appropriate error messages for inappropriate or missing fields
+    * If validated, pass the reservation into the repository's update method, and if it passes, print a confirmation message
     * Test method with positive and negative cases
     
     Estimated Time: 40 minutes
@@ -167,3 +170,36 @@
 
 ### Deleting a Reservation
 
+* Start inside ReservationFileRepository and create the delete method
+    * Follow previous examples on how to accomplish this
+        * Basically just retrieve all the reservations, find the index of the reservation to be deleted, remove it from the list, and rewrite the data file after
+        * This will return a boolean indicating if the deletion was successful or not
+    * Test the method
+    
+    Estimated Time: 40 minutes
+
+* Move into Domain and write the delete method in ReservationService
+    * This will take in a reservation's id, find that reservation from the repository, and pass that reservation into the repository's delete method
+    * Based on the returned boolean, print a confirmation or error message
+    * Test method with positive and negative cases
+
+    Estimated Time: 40 minutes
+
+* Move into UI layer, create a deleteReservation method inside View
+    * This will capture a user's input as to which reservation they wish to delete, then pass along that host/reservation id to the controller
+    * Controller takes in id (or maybe just the entire reservation), passes it along to service to get a result back
+    * Display messages if the deletion was successful or not
+    * Add method to the menu loop's switch statement
+    
+    Estimated Time: 40 minutes
+
+* Run the app and navigate the UI to ensure that delete is working properly
+  
+    Estimated Time: 20 minutes
+
+#### Total Time: 2 hours 20 minutes
+
+## Stretch Goals
+
+* Will return to this when/if I feel I have time to achieve these. Some should be pretty straightforward, e.g. adding Hosts and Guests
+    
