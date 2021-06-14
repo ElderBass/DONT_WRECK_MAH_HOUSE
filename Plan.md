@@ -58,11 +58,11 @@
         * Fields: int id, LocalDate startDate, LocalDate endDate, Host host, Guest guest, BigDecimal totalCost, String directory (which will be the reservations directory)
             * I might also want/need to use the GuestFileRepo and HostFileRepo as dependencies for retrieving data from their files
         * Methods: Getters and setters, a constructor for filePath
-    * Estimated Time: 40 minutes
+    * Estimated Time: 45 minutes
 * Spring DI
   * Estimated Time: 15 minutes
     
-#### Total Time for Initialization: 1 hour 40 minutes
+#### Total Time for Initialization: 1 hour 45 minutes
 
 ### II. View Existing Reservations Feature
 
@@ -198,6 +198,13 @@
     Estimated Time: 20 minutes
 
 #### Total Time: 2 hours 20 minutes
+
+### Debugging MVP
+* Exactly what it sounds like. Running through the UI to try and break my code (which I will be doing as I go but will run it and try out all the features fixing bugs and making UI changes as needed)
+
+#### Total Time: 1 hour
+
+## Total Time to MVP = 14 hours
 
 ## Stretch Goals
 
