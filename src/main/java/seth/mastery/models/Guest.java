@@ -10,6 +10,7 @@ public class Guest {
     private String phone;
     private String state;
 
+    public Guest(){};
     public Guest(int id, String firstName, String lastName, String email, String phone, String state) {
         this.id = id;
         this.firstName = firstName;
