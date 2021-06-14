@@ -1,6 +1,7 @@
 package seth.mastery.data;
 
 import seth.mastery.models.Guest;
+import seth.mastery.models.Host;
 import seth.mastery.models.Reservation;
 
 import java.io.IOException;
@@ -16,7 +17,8 @@ public class ReservationFileRepository implements ReservationRepository {
     private final String HEADER = "id,start_date,end_date,guest_id,total";
     private String directory;
 
-    private GuestRe
+    private GuestFileRepository guestRepo = new GuestFileRepository("./data/guests.csv");
+    private HostFileRepository hostRepo = new HostFileRepository("./data/hosts.csv");
 
     final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -77,13 +79,11 @@ public class ReservationFileRepository implements ReservationRepository {
         result.setGuestId(Integer.parseInt(fields[3]));
         result.setTotal(new BigDecimal(fields[4]));
 
-        Guest guest = new Guest();
-        guest.setId(Integer.parseInt(fields[3]));
+        Guest guest = guestRepo.findById(Integer.parseInt(fields[3]));;
         result.setGuest(guest);
 
-        Item item = new Item();
-        item.setId(Integer.parseInt(fields[2]));
-        result.setItem(item);
+        Host host = hostRepo.findById(hostId);
+        result.setHost(host);
         return result;
     }
 }

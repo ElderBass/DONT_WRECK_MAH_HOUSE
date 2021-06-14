@@ -17,6 +17,8 @@ public class Host {
     private BigDecimal standardRate;
     private BigDecimal weekendRate;
 
+    public Host(){};
+
     public Host(String id, String lastName, String email, String phone, String address, String city, String state, int postalCode, BigDecimal standardRate, BigDecimal weekendRate) {
         this.id = id;
         this.lastName = lastName;
