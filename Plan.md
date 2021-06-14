@@ -55,7 +55,8 @@
         * Fields: String id, String lastName, String email, String phone, String address, String city, String state, int postalCode, BigDecimal standardRate, BigDecimal weekendRate 
         * Methods: Getters and setters for all fields and a constructor
     4. Reservation
-        * Fields: int id, LocalDate startDate, LocalDate endDate, Host host, Guest guest, BigDecimal totalCost, String filePath (which will be the reservations directory)
+        * Fields: int id, LocalDate startDate, LocalDate endDate, Host host, Guest guest, BigDecimal totalCost, String directory (which will be the reservations directory)
+            * I might also want/need to use the GuestFileRepo and HostFileRepo as dependencies for retrieving data from their files
         * Methods: Getters and setters, a constructor for filePath
     * Estimated Time: 40 minutes
 * Spring DI
@@ -134,4 +135,35 @@
 #### Total Time: 3 hours 40 minutes
 
 ### IV. Edit Existing Reservations
+
+* Start with an update method in the ReservationFileRepository that returns a boolean based on if the Reservation was updated or not
+    * Follow examples from previous projects
+    * Will retrieve all reservations from a certain host, find where the incoming reservation is, overwrite the previous reservation with the new one, then writeAll to the file
+    * Test this method as well.
+    
+    Estimated Time: 40 minutes
+  
+* Move to Domain and set up the update method in there, which will return a result
+    * Will need to validate fields again as per the assessment requirements
+    * Test method with positive and negative cases
+    
+    Estimated Time: 40 minutes
+  
+* Move into View and write out a method (or two) for updating a reservation
+    * Probably will have a main updateReservation method that retrieves the Reservation to be updated, then passes this into a separate update method that will have the user fill out all the relevant fields
+        * Keep the previous values handy and have user hit enter to keep those values the same
+    * Set the user's input for the new fields to that Reservation object, then pass that along to controller
+
+    Estimated Time: 30 minutes
+  
+* Grab the updated Reservation from previous method inside Controller and use the service to update the Reservation
+    * If it fails to update, print an error message, otherwise print a confirmation message and maybe even display the updated reservation
+    * Add this to the menu loop
+    * Test out the full range from the UI menu
+    
+    Estimated Time: 30-60 minutes (depending on bugs)
+  
+#### Total Time: ~ 2 hours 30 minutes
+
+### Deleting a Reservation
 
