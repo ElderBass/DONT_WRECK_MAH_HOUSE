@@ -9,18 +9,18 @@
   2. Create a Reservation for a guest with a host.
   3. Edit existing Reservations.
   4. Cancel a future Reservation.
-* This will be an MVC application with data files for Hosts, Guests, and Reservations
+* This will be an MVC application with seth.mastery.data files for Hosts, Guests, and Reservations
     * Data, Domain, and UI layers will be established as well as a package for the Models
     
 * Summary of plan:
     * Set up project via GitHub
-    * Add data files for Guests, Hosts, and Reservations to a new directory in root
+    * Add seth.mastery.data files for Guests, Hosts, and Reservations to a new directory in root
     * Add Spring and JUnit dependencies to pom.xml
     * Set up package structure for project and initialize files needed
       * **Models** - need models for Administrator, Guest, Host, and Reservation for sure, and maybe Location?
       * **Data** - HostFileRepository, GuestFileRepository, ReservationFileRepository
         * These will all implement their respective interfaces
-        * Connect the repositories with their respective data files
+        * Connect the repositories with their respective seth.mastery.data files
         * Reservation will need Hosts and Guests as dependencies
       * **Domain** - HostService, GuestService, and ReservationService, as well as a general Result class will all live here
       * **UI** - just need the View and Controller class
@@ -55,9 +55,9 @@
         * Fields: String id, String lastName, String email, String phone, String address, String city, String state, int postalCode, BigDecimal standardRate, BigDecimal weekendRate 
         * Methods: Getters and setters for all fields and a constructor
     4. Reservation
-        * Fields: int id, LocalDate startDate, LocalDate endDate, Host host, Guest guest, BigDecimal totalCost, String directory (which will be the reservations directory)
-            * I might also want/need to use the GuestFileRepo and HostFileRepo as dependencies for retrieving data from their files
-        * Methods: Getters and setters, a constructor for filePath
+        * Fields: int id, LocalDate startDate, LocalDate endDate, Host host, Guest guest, BigDecimal totalCost
+            * I might also want/need to use the GuestFileRepo and HostFileRepo as dependencies for retrieving seth.mastery.data from their files
+        * Methods: Getters and setters, a constructor for fields, and a getCost() method for calculating the cost of a stay
     * Estimated Time: 45 minutes
 * Spring DI
   * Estimated Time: 15 minutes
@@ -172,7 +172,7 @@
 
 * Start inside ReservationFileRepository and create the delete method
     * Follow previous examples on how to accomplish this
-        * Basically just retrieve all the reservations, find the index of the reservation to be deleted, remove it from the list, and rewrite the data file after
+        * Basically just retrieve all the reservations, find the index of the reservation to be deleted, remove it from the list, and rewrite the seth.mastery.data file after
         * This will return a boolean indicating if the deletion was successful or not
     * Test the method
     
