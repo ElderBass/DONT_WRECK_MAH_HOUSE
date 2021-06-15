@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HostRepositoryDouble {
+public class HostRepositoryDouble implements HostRepository {
 
     public final static Host HOST = makeHost();
 
@@ -31,5 +31,20 @@ public class HostRepositoryDouble {
         host.setWeekendRate(new BigDecimal(80.0));
 
         return host;
+    }
+
+    @Override
+    public List<Host> findAll() {
+        return hosts;
+    }
+
+    @Override
+    public Host findById(String id) {
+        return null;
+    }
+
+    @Override
+    public Host findByEmail(String email) {
+        return null;
     }
 }
