@@ -127,11 +127,11 @@ public class ReservationService {
 
     private Result validateDates(Reservation reservation, Result<Reservation> result) {
 
-        if (reservation.getStartDate().compareTo(LocalDate.now()) > 0) {
+        if (reservation.getStartDate().compareTo(LocalDate.now()) < 0) {
             result.addErrorMessage("Start date is in the past. Stop living in the past and move on with your life.");
         }
 
-        if (reservation.getEndDate().compareTo(reservation.getStartDate()) >= 0) {
+        if (reservation.getStartDate().compareTo(reservation.getEndDate()) >= 0) {
             result.addErrorMessage("Start date must come before end date. Entropy dictates time must move forward, not backward.");
         }
 

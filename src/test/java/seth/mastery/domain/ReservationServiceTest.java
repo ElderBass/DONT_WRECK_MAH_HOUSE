@@ -29,8 +29,18 @@ class ReservationServiceTest {
     }
 
     @Test
-    void shouldAddReservation() {
+    void shouldAddReservation() throws DataAccessException {
+        Reservation reservation = new Reservation();
 
+        reservation.setHost(HostRepositoryDouble.HOST);
+        reservation.setGuest(GuestRepositoryDouble.GUEST);
+        reservation.setGuestId(GuestRepositoryDouble.GUEST.getId());
+        reservation.setStartDate(LocalDate.of(2021, 8, 10));
+        reservation.setEndDate(LocalDate.of(2021, 8, 13));
+        reservation.setTotal(new BigDecimal(100.00));
+
+        Result<Reservation> result = service.add(reservation);
+        assertTrue(result.isSuccess());
     }
 
     @Test
