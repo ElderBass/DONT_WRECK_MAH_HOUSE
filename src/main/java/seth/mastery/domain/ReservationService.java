@@ -33,7 +33,7 @@ public class ReservationService {
         if (!result.isSuccess()) {
             return result;
         }
-        
+
         Reservation added = reservationRepo.add(reservation);
         result.setPayload(added);
 
@@ -66,22 +66,27 @@ public class ReservationService {
     private Result validateNulls(Reservation reservation, Result<Reservation> result) {
         if (reservation == null) {
             result.addErrorMessage("Reservation cannot be null. Please try again.");
+            return result;
         }
 
         if (reservation.getGuest() == null) {
             result.addErrorMessage("Reservation needs a Guest. Please try again.");
+            return result;
         }
 
         if (reservation.getStartDate() == null) {
             result.addErrorMessage("Reservation must have a start date. Please try again.");
+            return result;
         }
 
         if (reservation.getEndDate() == null) {
             result.addErrorMessage("Reservation must have an end date. Please try again.");
+            return result;
         }
 
         if (reservation.getTotal() == null) {
             result.addErrorMessage("Total amount missing for reservation. Please try again.");
+            return result;
         }
         return result;
     }
@@ -90,18 +95,21 @@ public class ReservationService {
         Guest guest = reservation.getGuest();
         if (guest.getFirstName() == null) {
             result.addErrorMessage("Guest must have a first name.");
+            return result;
         } else if (guest.getFirstName().equals("")) {
             result.addErrorMessage("Guest must have a first name.");
         }
 
         if (guest.getLastName() == null) {
             result.addErrorMessage("Guest must have a last name.");
+            return result;
         } else if (guest.getLastName().equals("")) {
             result.addErrorMessage("Guest must have a last name.");
         }
 
         if (guest.getEmail() == null) {
             result.addErrorMessage("Guest must have a valid email address.");
+            return result;
         } else if (guest.getEmail().equals("")) {
             result.addErrorMessage("Guest must have a valid email address.");
         }
@@ -119,11 +127,11 @@ public class ReservationService {
 
     private Result validateDates(Reservation reservation, Result<Reservation> result) {
 
-        if (reservation.getStartDate().compareTo(LocalDate.now()) < 0) {
+        if (reservation.getStartDate().compareTo(LocalDate.now()) > 0) {
             result.addErrorMessage("Start date is in the past. Stop living in the past and move on with your life.");
         }
 
-        if (reservation.getEndDate().compareTo(reservation.getStartDate()) <= 0) {
+        if (reservation.getEndDate().compareTo(reservation.getStartDate()) >= 0) {
             result.addErrorMessage("Start date must come before end date. Entropy dictates time must move forward, not backward.");
         }
 
