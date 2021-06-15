@@ -28,7 +28,7 @@ public class ReservationFileRepository implements ReservationRepository {
     public ReservationFileRepository(String directory) {
         this.directory = directory;
     }
-// TODO start here when you get back
+
     @Override
     public List<Reservation> findAll(String hostId) {
         List<Reservation> result = new ArrayList<>();
@@ -63,6 +63,10 @@ public class ReservationFileRepository implements ReservationRepository {
     public boolean delete(Reservation reservation) {
         return false;
     }
+
+
+    // HELPER METHODS
+    // ===========================================================================================
 
     private String getFilePath(String hostId) {
         return Paths.get(directory, hostId + ".csv").toString();
