@@ -113,7 +113,7 @@ class ReservationServiceTest {
         assertFalse(result.isSuccess());
     }
 
-    // TODO run tests for overlapping dates and shit
+    // TODO make sure these tests for add are exhaustive
 
     @Test
     void shouldNotAddReservationInPast() throws DataAccessException{
@@ -147,7 +147,61 @@ class ReservationServiceTest {
 
     @Test
     void shouldNotAddReservationDuringExistingReservation() throws DataAccessException {
+        Reservation reservation = new Reservation();
 
+        reservation.setHost(HostRepositoryDouble.HOST);
+        reservation.setGuest(GuestRepositoryDouble.GUEST);
+        reservation.setGuestId(GuestRepositoryDouble.GUEST.getId());
+        reservation.setStartDate(LocalDate.of(2021, 8, 1));
+        reservation.setEndDate(LocalDate.of(2021, 8, 2));
+        reservation.setTotal(new BigDecimal(100.00));
+
+        Result<Reservation> result = service.add(reservation);
+        assertFalse(result.isSuccess());
     }
 
+    @Test
+    void shouldNotAddStartDateInsideExistingReservation() throws DataAccessException {
+        Reservation reservation = new Reservation();
+
+        reservation.setHost(HostRepositoryDouble.HOST);
+        reservation.setGuest(GuestRepositoryDouble.GUEST);
+        reservation.setGuestId(GuestRepositoryDouble.GUEST.getId());
+        reservation.setStartDate(LocalDate.of(2021, 8, 1));
+        reservation.setEndDate(LocalDate.of(2021, 8, 9));
+        reservation.setTotal(new BigDecimal(100.00));
+
+        Result<Reservation> result = service.add(reservation);
+        assertFalse(result.isSuccess());
+    }
+
+    @Test
+    void shouldNotAddEndDateInsideExistingReservation() throws DataAccessException {
+        Reservation reservation = new Reservation();
+
+        reservation.setHost(HostRepositoryDouble.HOST);
+        reservation.setGuest(GuestRepositoryDouble.GUEST);
+        reservation.setGuestId(GuestRepositoryDouble.GUEST.getId());
+        reservation.setStartDate(LocalDate.of(2021, 7, 30));
+        reservation.setEndDate(LocalDate.of(2021, 8, 5));
+        reservation.setTotal(new BigDecimal(100.00));
+
+        Result<Reservation> result = service.add(reservation);
+        assertFalse(result.isSuccess());
+    }
+
+    @Test
+    void shouldNotAddReservationThatContainsExistingReservation() throws DataAccessException {
+        Reservation reservation = new Reservation();
+
+        reservation.setHost(HostRepositoryDouble.HOST);
+        reservation.setGuest(GuestRepositoryDouble.GUEST);
+        reservation.setGuestId(GuestRepositoryDouble.GUEST.getId());
+        reservation.setStartDate(LocalDate.of(2021, 7, 30));
+        reservation.setEndDate(LocalDate.of(2021, 8, 9));
+        reservation.setTotal(new BigDecimal(100.00));
+
+        Result<Reservation> result = service.add(reservation);
+        assertFalse(result.isSuccess());
+    }
 }
