@@ -1,5 +1,8 @@
 package seth.mastery.data;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
 import seth.mastery.models.Host;
 
 import java.io.BufferedReader;
@@ -11,11 +14,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Repository
 public class HostFileRepository implements HostRepository {
 
     private String filePath;
 
-    public HostFileRepository(String filePath) { this.filePath = filePath; }
+    @Autowired
+    public HostFileRepository(@Value("${hostFilePath}")String filePath) { this.filePath = filePath; }
 
     @Override
     public List<Host> findAll() {

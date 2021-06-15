@@ -1,5 +1,8 @@
 package seth.mastery.data;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
 import seth.mastery.models.Guest;
 import seth.mastery.models.Host;
 
@@ -11,11 +14,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Repository
 public class GuestFileRepository implements GuestRepository {
 
     private String filePath;
 
-    public GuestFileRepository(String filePath) { this.filePath = filePath; }
+    @Autowired
+    public GuestFileRepository(@Value("${guestFilePath}")String filePath) { this.filePath = filePath; }
 
     @Override
     public List<Guest> findAll() {

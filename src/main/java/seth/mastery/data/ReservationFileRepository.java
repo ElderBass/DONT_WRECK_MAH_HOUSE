@@ -1,5 +1,8 @@
 package seth.mastery.data;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
 import seth.mastery.models.Guest;
 import seth.mastery.models.Host;
 import seth.mastery.models.Reservation;
@@ -15,18 +18,25 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class ReservationFileRepository implements ReservationRepository {
 
     private final String HEADER = "id,start_date,end_date,guest_id,total";
     private String directory;
 
-    private GuestFileRepository guestRepo = new GuestFileRepository("./data/guests.csv");
-    private HostFileRepository hostRepo = new HostFileRepository("./data/hosts.csv");
+    private final String GUEST_PATH = "./data/guests.csv";
+    private final String HOST_PATH = "./data/hosts.csv";
+
+    private GuestFileRepository guestRepo;
+    private HostFileRepository hostRepo;
 
     final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    public ReservationFileRepository(String directory) {
+    @Autowired
+    public ReservationFileRepository(@Value("${reservationDirectory}")String directory, GuestFileRepository guestFileRepository, HostFileRepository hostFileRepository) {
         this.directory = directory;
+        this.guestRepo = guestFileRepository;
+        this.hostRepo = hostFileRepository;
     }
 
     @Override

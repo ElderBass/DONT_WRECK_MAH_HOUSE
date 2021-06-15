@@ -3,5 +3,43 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         https://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <bean id="guestFileRepository" class="seth.mastery.data.GuestFileRepository">
+        <constructor-arg value="./data/guests.csv"/>
+    </bean>
+    <bean id="guestService" class="seth.mastery.domain.GuestService">
+        <constructor-arg ref="guestFileRepository"/>
+    </bean>
 
+
+    <bean id="hostFileRepository" class="seth.mastery.data.HostFileRepository">
+        <constructor-arg value="./data/hosts.csv"></constructor-arg>
+    </bean>
+    <bean id="hostService" class="seth.mastery.domain.HostService">
+        <constructor-arg ref="hostFileRepository"/>
+    </bean>
+
+
+    <bean id="reservationFileRepository" class="seth.mastery.data.ReservationFileRepository">
+        <constructor-arg value="./data/reservations"/>
+        <constructor-arg ref="guestFileRepository"/>
+        <constructor-arg ref="hostFileRepository"/>
+    </bean>
+    <bean id="reservationService" class="seth.mastery.domain.ReservationService">
+        <constructor-arg ref="reservationFileRepository"/>
+        <constructor-arg ref="hostFileRepository"/>
+        <constructor-arg ref="guestFileRepository"/>
+    </bean>
+
+    <bean id="consoleIO" class="seth.mastery.ui.ConsoleIO"/>
+
+    <bean id="view" class="seth.mastery.ui.View">
+        <constructor-arg ref="consoleIO"/>
+    </bean>
+
+    <bean id="controller" class="seth.mastery.ui.Controller">
+        <constructor-arg ref="reservationService"/>
+        <constructor-arg ref="hostService"/>
+        <constructor-arg ref="guestService"/>
+        <constructor-arg ref="view"/>
+    </bean>
 </beans>

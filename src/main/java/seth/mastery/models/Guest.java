@@ -1,5 +1,8 @@
 package seth.mastery.models;
 
+import org.springframework.stereotype.Component;
+
+
 public class Guest {
 
     // guest_id,first_name,last_name,email,phone,state

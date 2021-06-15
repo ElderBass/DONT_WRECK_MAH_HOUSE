@@ -25,9 +25,11 @@ class ReservationFileRepositoryTest {
 
     private String hostId = "3edda6bc-ab95-49a8-8962-d50b53f84b15";
 
-    ReservationRepository resRepo = new ReservationFileRepository(RES_TEST_PATH);
-    HostRepository hostRepo = new HostFileRepository(HOST_TEST_PATH);
-    GuestRepository guestRepo = new GuestFileRepository(GUEST_TEST_PATH);
+    HostFileRepository hostRepo = new HostFileRepository(HOST_TEST_PATH);
+    GuestFileRepository guestRepo = new GuestFileRepository(GUEST_TEST_PATH);
+
+    ReservationRepository resRepo = new ReservationFileRepository(RES_TEST_PATH, guestRepo, hostRepo);
+
 
     @BeforeEach
     void setup() throws DataAccessException, IOException {

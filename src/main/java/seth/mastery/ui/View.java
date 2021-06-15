@@ -1,7 +1,10 @@
 package seth.mastery.ui;
 
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 
+@Component
 public class View {
 
     private ConsoleIO io;
@@ -10,12 +13,12 @@ public class View {
         this.io = io;
     }
 
-    public MenuOption selectMainMenuOption() {
+    public MenuOption selectMenuOption() {
         displayHeader("Main Menu");
         int min = Integer.MAX_VALUE;
         int max = Integer.MIN_VALUE;
         for (MenuOption option : MenuOption.values()) {
-
+            io.printf("%s. %s%n", option.getValue(), option.getMessage());
             min = Math.min(min, option.getValue());
             max = Math.max(max, option.getValue());
         }

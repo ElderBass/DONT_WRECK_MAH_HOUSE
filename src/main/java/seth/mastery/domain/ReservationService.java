@@ -1,5 +1,6 @@
 package seth.mastery.domain;
 
+import org.springframework.stereotype.Service;
 import seth.mastery.data.GuestRepository;
 import seth.mastery.data.HostRepository;
 import seth.mastery.data.ReservationRepository;
@@ -7,6 +8,7 @@ import seth.mastery.models.Reservation;
 
 import java.util.List;
 
+@Service
 public class ReservationService {
     private final ReservationRepository reservationRepo;
     private final HostRepository hostRepo;

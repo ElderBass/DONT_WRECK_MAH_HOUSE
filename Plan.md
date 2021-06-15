@@ -24,7 +24,7 @@
         * Reservation will need Hosts and Guests as dependencies
       * **Domain** - HostService, GuestService, and ReservationService, as well as a general Result class will all live here
       * **UI** - just need the View and Controller class
-    * Once files are all initialized, I'll go ahead and do the Spring DI and run the Controller in App
+    * Once files are all initialized, I'll go ahead and do the Spring DI and run the Controller in seth.mastery.App
     * Start by fleshing out models
     * Then start implementing features
         * Go in order of what I think is most doable/relevant, then go from there
