@@ -47,7 +47,7 @@ public class Controller {
                     viewReservations();
                     break;
                 case MAKE_RESERVATION:
-                    // makeReservation();
+                    makeReservation();
                     break;
                 case EDIT_RESERVATION:
                     // editReservation();
@@ -59,11 +59,14 @@ public class Controller {
         } while (option != MenuOption.EXIT);
     }
 
+    // MENU METHODS
+    // =================================================================================================
+
     private void viewReservations() {
         String email = view.getEmail();
         Result result = hostService.findByEmail(email);
         if (!result.isSuccess()) {
-            view.displayStatus(false, result.getErrorMessages());
+            view.displayResult(result);
             return;
         } else {
             Host host = (Host) result.getPayload();
@@ -72,5 +75,13 @@ public class Controller {
             view.displayReservations(reservations, host);
             view.enterToContinue();
         }
+    }
+
+    private void makeReservation() throws DataAccessException {
+        view.displayHeader(MenuOption.MAKE_RESERVATION.getMessage());
+        Reservation reservation = view.createReservation();
+        Result result = reservationService.add(reservation);
+        view.displayResult(result);
+
     }
 }

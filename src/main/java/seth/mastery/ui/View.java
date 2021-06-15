@@ -1,6 +1,7 @@
 package seth.mastery.ui;
 
 import org.springframework.stereotype.Component;
+import seth.mastery.domain.Result;
 import seth.mastery.models.Host;
 import seth.mastery.models.Reservation;
 
@@ -46,6 +47,14 @@ public class View {
         }
     }
 
+    public Reservation createReservation() {
+        Reservation reservation = new Reservation();
+
+        // TODO need to figure this shit out. Going to work out now though.
+
+        return reservation;
+    }
+
     public String getEmail() { return io.readRequiredString("Please enter Host's email: "); }
 
     // HELPER METHODS
@@ -62,14 +71,15 @@ public class View {
         io.println(ex.getMessage());
     }
 
-    public void displayStatus(boolean success, String message) {
-        displayStatus(success, List.of(message));
-    }
-
-    public void displayStatus(boolean success, List<String> messages) {
-        displayHeader(success ? "Success" : "Error");
-        for (String message : messages) {
-            io.println(message);
+    public void displayResult(Result result) {
+        if (result.isSuccess()) {
+            System.out.println("Operation Successful.");
+        } else {
+            displayHeader("Errors");
+            for (String msg : result.getErrorMessages()) {
+                System.out.printf("- %s%n", msg);
+                System.out.println("Could not perform operation. Please try again.");
+            }
         }
     }
 
