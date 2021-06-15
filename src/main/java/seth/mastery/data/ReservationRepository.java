@@ -8,7 +8,7 @@ public interface ReservationRepository {
 
     List<Reservation> findAll(String hostId);
 
-    Reservation add(Reservation reservation);
+    Reservation add(Reservation reservation) throws DataAccessException;
 
     boolean update(Reservation reservation);
 

@@ -60,8 +60,12 @@ public class ReservationFileRepository implements ReservationRepository {
     }
 
     @Override
-    public Reservation add(Reservation reservation) {
-        return null;
+    public Reservation add(Reservation reservation) throws DataAccessException {
+        List<Reservation> reservations = findAll(reservation.getHost().getId());
+        reservation.setId(getNextId(reservations));
+        reservations.add(reservation);
+        writeAll(reservations, reservation.getHost().getId());
+        return reservation;
     }
 
     @Override
@@ -80,6 +84,14 @@ public class ReservationFileRepository implements ReservationRepository {
 
     private String getFilePath(String hostId) {
         return Paths.get(directory, hostId + ".csv").toString();
+    }
+
+    private int getNextId(List<Reservation> all) {
+        int nextId = 0;
+        for (Reservation r : all) {
+            nextId = Math.max(nextId, r.getId());
+        }
+        return nextId + 1;
     }
 
     private void writeAll(List<Reservation> reservations, String hostId) throws DataAccessException {

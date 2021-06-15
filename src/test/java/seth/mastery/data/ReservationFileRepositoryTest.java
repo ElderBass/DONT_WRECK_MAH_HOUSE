@@ -2,11 +2,16 @@ package seth.mastery.data;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import seth.mastery.models.Guest;
+import seth.mastery.models.Host;
+import seth.mastery.models.Reservation;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -44,4 +49,21 @@ class ReservationFileRepositoryTest {
         assertEquals(13, actual);
     }
 
+    @Test
+    void shouldAddReservation() throws DataAccessException {
+        Reservation reservation = new Reservation();
+        Host host = hostRepo.findById(hostId);
+        Guest guest = guestRepo.findAll().get(0);
+
+        reservation.setGuest(guest);
+        reservation.setHost(host);
+        reservation.setStartDate(LocalDate.of(2021, 6, 12));
+        reservation.setEndDate(LocalDate.of(2021, 6, 15));
+        reservation.setTotal(new BigDecimal(300.00));
+
+        Reservation actual = resRepo.add(reservation);
+
+        assertNotNull(actual);
+        assertEquals(14, actual.getId());
+    }
 }
