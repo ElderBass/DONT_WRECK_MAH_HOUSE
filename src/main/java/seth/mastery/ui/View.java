@@ -1,6 +1,8 @@
 package seth.mastery.ui;
 
 import org.springframework.stereotype.Component;
+import seth.mastery.models.Host;
+import seth.mastery.models.Reservation;
 
 import java.util.List;
 
@@ -27,6 +29,25 @@ public class View {
         return MenuOption.fromValue(io.readInt(message, min, max));
     }
 
+    public void displayReservations(List<Reservation> reservations, Host host) {
+        displayHeader(MenuOption.VIEW_HOST_RESERVATIONS.getMessage());
+        System.out.println();
+        displayHeader(host.getLastName() + ", " + host.getEmail() + " - " + host.getCity() + ", " + host.getState());
+        for (Reservation r : reservations) {
+            // ID: 8, 08/12/2020 - 08/18/2020, Guest: Carncross, Tremain, Email: tcarncross2@japanpost.jp
+            System.out.printf("ID: %s | Dates: %s - %s | Guest: %s, %s - %s",
+                    r.getId(),
+                    r.getStartDate(),
+                    r.getEndDate(),
+                    r.getGuest().getLastName(),
+                    r.getGuest().getFirstName(),
+                    r.getGuest().getEmail());
+            System.out.println();
+        }
+    }
+
+    public String getEmail() { return io.readRequiredString("Please enter Host's email: "); }
+
     // HELPER METHODS
     // =====================================================================================
 
@@ -50,5 +71,9 @@ public class View {
         for (String message : messages) {
             io.println(message);
         }
+    }
+
+    public void enterToContinue() {
+        io.readString("Press [Enter] to continue.");
     }
 }

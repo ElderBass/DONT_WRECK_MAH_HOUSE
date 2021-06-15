@@ -6,6 +6,11 @@ import seth.mastery.data.DataAccessException;
 import seth.mastery.domain.GuestService;
 import seth.mastery.domain.HostService;
 import seth.mastery.domain.ReservationService;
+import seth.mastery.domain.Result;
+import seth.mastery.models.Host;
+import seth.mastery.models.Reservation;
+
+import java.util.List;
 
 @Component
 public class Controller {
@@ -54,7 +59,18 @@ public class Controller {
         } while (option != MenuOption.EXIT);
     }
 
-    private void viewReservations() throws DataAccessException {
-        
+    private void viewReservations() {
+        String email = view.getEmail();
+        Result result = hostService.findByEmail(email);
+        if (!result.isSuccess()) {
+            view.displayStatus(false, result.getErrorMessages());
+            return;
+        } else {
+            Host host = (Host) result.getPayload();
+            String hostId = host.getId();
+            List<Reservation> reservations = reservationService.findAll(hostId);
+            view.displayReservations(reservations, host);
+            view.enterToContinue();
+        }
     }
 }
