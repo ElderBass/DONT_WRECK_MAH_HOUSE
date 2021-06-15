@@ -27,7 +27,7 @@ public class GuestFileRepository implements GuestRepository {
             for (String line = reader.readLine(); line != null; line = reader.readLine()) {
 
                 String[] fields = line.split(",", -1);
-                if (fields.length == 4) {
+                if (fields.length == 6) {
                     result.add(deserialize(fields));
                 }
             }

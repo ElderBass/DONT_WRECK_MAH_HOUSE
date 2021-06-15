@@ -4,12 +4,15 @@ import seth.mastery.models.Guest;
 import seth.mastery.models.Host;
 import seth.mastery.models.Reservation;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReservationFileRepository implements ReservationRepository {
@@ -25,10 +28,25 @@ public class ReservationFileRepository implements ReservationRepository {
     public ReservationFileRepository(String directory) {
         this.directory = directory;
     }
-
+// TODO start here when you get back
     @Override
     public List<Reservation> findAll(String hostId) {
-        return null;
+        List<Reservation> result = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(getFilePath(hostId)))) {
+
+            reader.readLine();
+
+            for (String line = reader.readLine(); line != null; line = reader.readLine()) {
+
+                String[] fields = line.split(",", -1);
+                if (fields.length == 5) {
+                    result.add(deserialize(fields, hostId));
+                }
+            }
+        } catch (IOException ex) {
+            // don't throw on read
+        }
+        return result;
     }
 
     @Override

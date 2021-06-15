@@ -27,7 +27,7 @@ public class HostFileRepository implements HostRepository {
             for (String line = reader.readLine(); line != null; line = reader.readLine()) {
 
                 String[] fields = line.split(",", -1);
-                if (fields.length == 4) {
+                if (fields.length == 10) {
                     result.add(deserialize(fields));
                 }
             }
