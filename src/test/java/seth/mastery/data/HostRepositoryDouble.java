@@ -17,7 +17,7 @@ public class HostRepositoryDouble implements HostRepository {
     }
 
     private static Host makeHost() {
-        // id,last_name,email,phone,address,city,state,postal_code,standard_rate,weekend_rate
+
         Host host = new Host();
         host.setId("498604db-b6d6-4599-a503-3d8190fda823");
         host.setLastName("Testerson");

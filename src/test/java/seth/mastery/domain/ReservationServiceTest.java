@@ -10,6 +10,7 @@ import seth.mastery.models.Reservation;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,7 +26,7 @@ class ReservationServiceTest {
     @Test
     void shouldFindAll() {
         int actual = service.findAll(hostId).size();
-        assertEquals(1, actual);
+        assertEquals(2, actual);
     }
 
     @Test
@@ -33,8 +34,8 @@ class ReservationServiceTest {
         Reservation reservation = new Reservation();
 
         reservation.setHost(HostRepositoryDouble.HOST);
-        reservation.setGuest(GuestRepositoryDouble.GUEST);
-        reservation.setGuestId(GuestRepositoryDouble.GUEST.getId());
+        reservation.setGuest(GuestRepositoryDouble.GUEST1);
+        reservation.setGuestId(GuestRepositoryDouble.GUEST1.getId());
         reservation.setStartDate(LocalDate.of(2021, 8, 10));
         reservation.setEndDate(LocalDate.of(2021, 8, 13));
         reservation.setTotal(new BigDecimal(100.00));
@@ -67,8 +68,8 @@ class ReservationServiceTest {
     @Test
     void shouldNotAddNullDates() throws DataAccessException {
         Reservation reservation = new Reservation();
-        reservation.setGuest(GuestRepositoryDouble.GUEST);
-        reservation.setGuestId(GuestRepositoryDouble.GUEST.getId());
+        reservation.setGuest(GuestRepositoryDouble.GUEST1);
+        reservation.setGuestId(GuestRepositoryDouble.GUEST1.getId());
         reservation.setStartDate(null);
         reservation.setEndDate(LocalDate.of(2021, 6, 20));
         reservation.setTotal(new BigDecimal(100.00));
@@ -86,7 +87,7 @@ class ReservationServiceTest {
     @Test
     void shouldNotAddEmptyGuestEmail() throws DataAccessException {
         Reservation reservation = new Reservation();
-        Guest guest = GuestRepositoryDouble.GUEST;
+        Guest guest = GuestRepositoryDouble.GUEST1;
         guest.setEmail("");
 
         reservation.setGuest(guest);
@@ -103,7 +104,7 @@ class ReservationServiceTest {
     @Test
     void shouldNotAddEmptyGuestName() throws DataAccessException {
         Reservation reservation = new Reservation();
-        Guest guest = GuestRepositoryDouble.GUEST;
+        Guest guest = GuestRepositoryDouble.GUEST1;
         guest.setFirstName("");
 
         reservation.setGuest(guest);
@@ -116,7 +117,7 @@ class ReservationServiceTest {
         assertFalse(result.isSuccess());
 
         guest.setLastName("");
-        guest.setFirstName(GuestRepositoryDouble.GUEST.getFirstName());
+        guest.setFirstName(GuestRepositoryDouble.GUEST1.getFirstName());
         reservation.setGuest(guest);
 
         result = service.add(reservation);
@@ -130,8 +131,8 @@ class ReservationServiceTest {
         Reservation reservation = new Reservation();
 
         reservation.setHost(HostRepositoryDouble.HOST);
-        reservation.setGuest(GuestRepositoryDouble.GUEST);
-        reservation.setGuestId(GuestRepositoryDouble.GUEST.getId());
+        reservation.setGuest(GuestRepositoryDouble.GUEST1);
+        reservation.setGuestId(GuestRepositoryDouble.GUEST1.getId());
         reservation.setStartDate(LocalDate.of(2020, 6, 18));
         reservation.setEndDate(LocalDate.of(2021, 6, 20));
         reservation.setTotal(new BigDecimal(100.00));
@@ -145,8 +146,8 @@ class ReservationServiceTest {
         Reservation reservation = new Reservation();
 
         reservation.setHost(HostRepositoryDouble.HOST);
-        reservation.setGuest(GuestRepositoryDouble.GUEST);
-        reservation.setGuestId(GuestRepositoryDouble.GUEST.getId());
+        reservation.setGuest(GuestRepositoryDouble.GUEST1);
+        reservation.setGuestId(GuestRepositoryDouble.GUEST1.getId());
         reservation.setStartDate(LocalDate.of(2021, 6, 20));
         reservation.setEndDate(LocalDate.of(2021, 6, 19));
         reservation.setTotal(new BigDecimal(100.00));
@@ -159,11 +160,12 @@ class ReservationServiceTest {
     void shouldNotAddReservationDuringExistingReservation() throws DataAccessException {
         Reservation reservation = new Reservation();
 
+
         reservation.setHost(HostRepositoryDouble.HOST);
-        reservation.setGuest(GuestRepositoryDouble.GUEST);
-        reservation.setGuestId(GuestRepositoryDouble.GUEST.getId());
-        reservation.setStartDate(LocalDate.of(2021, 8, 1));
-        reservation.setEndDate(LocalDate.of(2021, 8, 2));
+        reservation.setGuest(GuestRepositoryDouble.GUEST1);
+        reservation.setGuestId(GuestRepositoryDouble.GUEST1.getId());
+        reservation.setStartDate(LocalDate.of(2021, 11, 2));
+        reservation.setEndDate(LocalDate.of(2021, 11, 5));
         reservation.setTotal(new BigDecimal(100.00));
 
         Result<Reservation> result = service.add(reservation);
@@ -175,10 +177,10 @@ class ReservationServiceTest {
         Reservation reservation = new Reservation();
 
         reservation.setHost(HostRepositoryDouble.HOST);
-        reservation.setGuest(GuestRepositoryDouble.GUEST);
-        reservation.setGuestId(GuestRepositoryDouble.GUEST.getId());
-        reservation.setStartDate(LocalDate.of(2021, 8, 1));
-        reservation.setEndDate(LocalDate.of(2021, 8, 9));
+        reservation.setGuest(GuestRepositoryDouble.GUEST1);
+        reservation.setGuestId(GuestRepositoryDouble.GUEST1.getId());
+        reservation.setStartDate(LocalDate.of(2021, 11, 4));
+        reservation.setEndDate(LocalDate.of(2021, 11, 9));
         reservation.setTotal(new BigDecimal(100.00));
 
         Result<Reservation> result = service.add(reservation);
@@ -190,10 +192,10 @@ class ReservationServiceTest {
         Reservation reservation = new Reservation();
 
         reservation.setHost(HostRepositoryDouble.HOST);
-        reservation.setGuest(GuestRepositoryDouble.GUEST);
-        reservation.setGuestId(GuestRepositoryDouble.GUEST.getId());
-        reservation.setStartDate(LocalDate.of(2021, 7, 30));
-        reservation.setEndDate(LocalDate.of(2021, 8, 5));
+        reservation.setGuest(GuestRepositoryDouble.GUEST1);
+        reservation.setGuestId(GuestRepositoryDouble.GUEST1.getId());
+        reservation.setStartDate(LocalDate.of(2021, 10, 30));
+        reservation.setEndDate(LocalDate.of(2021, 11, 5));
         reservation.setTotal(new BigDecimal(100.00));
 
         Result<Reservation> result = service.add(reservation);
@@ -205,45 +207,148 @@ class ReservationServiceTest {
         Reservation reservation = new Reservation();
 
         reservation.setHost(HostRepositoryDouble.HOST);
-        reservation.setGuest(GuestRepositoryDouble.GUEST);
-        reservation.setGuestId(GuestRepositoryDouble.GUEST.getId());
-        reservation.setStartDate(LocalDate.of(2021, 7, 30));
-        reservation.setEndDate(LocalDate.of(2021, 8, 9));
+        reservation.setGuest(GuestRepositoryDouble.GUEST1);
+        reservation.setGuestId(GuestRepositoryDouble.GUEST1.getId());
+        reservation.setStartDate(LocalDate.of(2021, 11, 30));
+        reservation.setEndDate(LocalDate.of(2021, 11, 9));
         reservation.setTotal(new BigDecimal(100.00));
 
         Result<Reservation> result = service.add(reservation);
         assertFalse(result.isSuccess());
     }
 
-    // TODO need to test all the update stuff too!
     @Test
-    void shouldNotUpdateEndDateLessThanStartDate() throws DataAccessException {
+    void shouldNotUpdateReservationInPast() throws DataAccessException {
+        Reservation reservation = new Reservation();
 
+        reservation.setId(1001);
+        reservation.setHost(HostRepositoryDouble.HOST);
+        reservation.setGuest(GuestRepositoryDouble.GUEST1);
+        reservation.setGuestId(GuestRepositoryDouble.GUEST1.getId());
+        reservation.setStartDate(LocalDate.of(2020, 10, 10));
+        reservation.setEndDate(LocalDate.of(2020, 10, 4));
+        reservation.setTotal(reservation.calculateTotal());
+
+        Result result = service.update(reservation);
+        assertFalse(result.isSuccess());
     }
 
     @Test
-    void shouldNotUpdateReservationInPast() throws DataAccessException {
+    void shouldNotUpdateEndDateLessThanStartDate() throws DataAccessException {
 
+        Reservation reservation = new Reservation();
+
+        reservation.setId(1001);
+        reservation.setHost(HostRepositoryDouble.HOST);
+        reservation.setGuest(GuestRepositoryDouble.GUEST1);
+        reservation.setGuestId(GuestRepositoryDouble.GUEST1.getId());
+        reservation.setStartDate(LocalDate.of(2021, 10, 10));
+        reservation.setEndDate(LocalDate.of(2021, 10, 4));
+        reservation.setTotal(reservation.calculateTotal());
+
+        Result result = service.update(reservation);
+        assertFalse(result.isSuccess());
     }
 
     @Test
     void shouldNotUpdateReservationDuringExistingReservation() throws DataAccessException {
 
+        Reservation reservation = new Reservation();
+
+        reservation.setId(1001);
+        reservation.setHost(HostRepositoryDouble.HOST);
+        reservation.setGuest(GuestRepositoryDouble.GUEST1);
+        reservation.setGuestId(GuestRepositoryDouble.GUEST1.getId());
+        reservation.setStartDate(LocalDate.of(2021, 9, 10));
+        reservation.setEndDate(LocalDate.of(2021, 9, 14));
+        reservation.setTotal(reservation.calculateTotal());
+
+        Result result = service.update(reservation);
+        assertFalse(result.isSuccess());
     }
 
     @Test
     void shouldNotUpdateStartDateInsideExistingReservation() throws DataAccessException {
 
+        Reservation reservation = new Reservation();
+
+        reservation.setId(1001);
+        reservation.setHost(HostRepositoryDouble.HOST);
+        reservation.setGuest(GuestRepositoryDouble.GUEST1);
+        reservation.setGuestId(GuestRepositoryDouble.GUEST1.getId());
+        reservation.setStartDate(LocalDate.of(2021, 9, 12));
+        reservation.setEndDate(LocalDate.of(2021, 9, 16));
+        reservation.setTotal(reservation.calculateTotal());
+
+        Result result = service.update(reservation);
+        assertFalse(result.isSuccess());
     }
 
     @Test
     void shouldNotUpdateEndDateInsideExistingReservation() throws DataAccessException {
 
+        Reservation reservation = new Reservation();
+
+        reservation.setId(1001);
+        reservation.setHost(HostRepositoryDouble.HOST);
+        reservation.setGuest(GuestRepositoryDouble.GUEST1);
+        reservation.setGuestId(GuestRepositoryDouble.GUEST1.getId());
+        reservation.setStartDate(LocalDate.of(2021, 9, 8));
+        reservation.setEndDate(LocalDate.of(2021, 9, 14));
+        reservation.setTotal(reservation.calculateTotal());
+
+        Result result = service.update(reservation);
+        assertFalse(result.isSuccess());
     }
 
     @Test
     void shouldNotUpdateReservationThatContainsExistingReservation() throws DataAccessException {
+        List<Reservation> all = service.findAll(hostId);
+        Reservation reservation = new Reservation();
 
+        reservation.setId(1001);
+        reservation.setHost(HostRepositoryDouble.HOST);
+        reservation.setGuest(GuestRepositoryDouble.GUEST1);
+        reservation.setGuestId(GuestRepositoryDouble.GUEST1.getId());
+        reservation.setStartDate(LocalDate.of(2021, 9, 8));
+        reservation.setEndDate(LocalDate.of(2021, 9, 16));
+        reservation.setTotal(reservation.calculateTotal());
+
+        Result result = service.update(reservation);
+        assertFalse(result.isSuccess());
+    }
+
+    @Test
+    void shouldUpdateStartDateOnExistingEndDate() throws DataAccessException {
+
+        Reservation reservation = new Reservation();
+
+        reservation.setId(1001);
+        reservation.setHost(HostRepositoryDouble.HOST);
+        reservation.setGuest(GuestRepositoryDouble.GUEST1);
+        reservation.setGuestId(GuestRepositoryDouble.GUEST1.getId());
+        reservation.setStartDate(LocalDate.of(2021, 9, 15));
+        reservation.setEndDate(LocalDate.of(2021, 9, 18));
+        reservation.setTotal(reservation.calculateTotal());
+
+        Result result = service.update(reservation);
+        assertTrue(result.isSuccess());
+    }
+
+    @Test
+    void shouldUpdateEndDateOnExistingStartDate() throws DataAccessException {
+        Reservation reservation = new Reservation();
+
+        reservation.setId(1001);
+        reservation.setHost(HostRepositoryDouble.HOST);
+        reservation.setGuest(GuestRepositoryDouble.GUEST1);
+        reservation.setGuestId(GuestRepositoryDouble.GUEST1.getId());
+        reservation.setStartDate(LocalDate.of(2021, 9, 4));
+        reservation.setEndDate(LocalDate.of(2021, 9, 9));
+        reservation.setTotal(reservation.calculateTotal());
+
+        Result result = service.update(reservation);
+        assertTrue(result.isSuccess());
     }
 
     // TODO need to test delete as well!

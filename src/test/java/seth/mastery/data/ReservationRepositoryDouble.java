@@ -14,13 +14,24 @@ public class ReservationRepositoryDouble implements ReservationRepository {
 
     public ReservationRepositoryDouble() {
         Reservation reservation = new Reservation();
-        reservation.setId(0);
+        reservation.setId(1);
         reservation.setHost(HostRepositoryDouble.HOST);
-        reservation.setGuest(GuestRepositoryDouble.GUEST);
-        reservation.setGuestId(GuestRepositoryDouble.GUEST.getId());
-        reservation.setStartDate(LocalDate.of(2021, 1, 1));
-        reservation.setEndDate(LocalDate.of(2021, 1, 4));
+        reservation.setGuest(GuestRepositoryDouble.GUEST1);
+        reservation.setGuestId(GuestRepositoryDouble.GUEST1.getId());
+        reservation.setStartDate(LocalDate.of(2021, 11, 1));
+        reservation.setEndDate(LocalDate.of(2021, 11, 8));
+        reservation.setTotal(reservation.calculateTotal());
         reservations.add(reservation);
+
+        Reservation newReservation = new Reservation();
+        newReservation.setId(2);
+        newReservation.setHost(HostRepositoryDouble.HOST);
+        newReservation.setGuest(GuestRepositoryDouble.GUEST2);
+        newReservation.setGuestId(GuestRepositoryDouble.GUEST2.getId());
+        newReservation.setStartDate(LocalDate.of(2021, 9, 9));
+        newReservation.setEndDate(LocalDate.of(2021, 9, 15));
+        reservations.add(newReservation);
+
     }
 
     @Override
