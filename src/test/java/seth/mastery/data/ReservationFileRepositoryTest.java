@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -65,5 +66,17 @@ class ReservationFileRepositoryTest {
 
         assertNotNull(actual);
         assertEquals(14, actual.getId());
+    }
+
+    @Test
+    void shouldUpdateExistingReservation() throws DataAccessException {
+        List<Reservation> reservations = resRepo.findAll(hostId);
+
+        Reservation reservation = reservations.get(0); // 1,2021-07-31,2021-08-07,640,2550
+        reservation.setStartDate(LocalDate.of(2021, 7, 30));
+        reservation.setEndDate(LocalDate.of(2021, 8, 6));
+
+        boolean actual = resRepo.update(reservation);
+        assertEquals(true, actual);
     }
 }

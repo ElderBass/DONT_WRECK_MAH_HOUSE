@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import seth.mastery.models.Guest;
-import seth.mastery.models.Host;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
