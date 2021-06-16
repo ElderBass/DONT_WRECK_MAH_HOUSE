@@ -68,6 +68,7 @@ public class ReservationService {
             return result;
         }
 
+        // TODO may need a different one for update? Or to tweak the one I already have...?
         result = validateDates(reservation, result);
         if (!result.isSuccess()) {
             return result;
@@ -151,13 +152,14 @@ public class ReservationService {
         List<Reservation> all = reservationRepo.findAll(reservation.getHost().getId());
         for (Reservation r : all) {
             if ((r.getStartDate().compareTo(reservation.getStartDate()) > 0 && r.getEndDate().compareTo(reservation.getEndDate()) < 0)
-                    || (r.getStartDate().compareTo(reservation.getStartDate()) <= 0 && r.getEndDate().compareTo(reservation.getEndDate()) >= 0)) {
+                    || (r.getStartDate().compareTo(reservation.getStartDate()) <= 0 && r.getEndDate().compareTo(reservation.getEndDate()) >= 0)
+                    && r.getId() != reservation.getId()) {
                 result.addErrorMessage("Time slot already filled. Please select a different date.");
             }
-            if (reservation.getStartDate().compareTo(r.getStartDate()) < 0 && reservation.getEndDate().compareTo(r.getStartDate()) > 0) {
+            if (reservation.getStartDate().compareTo(r.getStartDate()) < 0 && reservation.getEndDate().compareTo(r.getStartDate()) > 0 && r.getId() != reservation.getId()) {
                 result.addErrorMessage("Dates overlap with existing Reservation. Please select a different date.");
             }
-            if (reservation.getStartDate().compareTo(r.getEndDate()) < 0 && reservation.getEndDate().compareTo(r.getEndDate()) > 0) {
+            if (reservation.getStartDate().compareTo(r.getEndDate()) < 0 && reservation.getEndDate().compareTo(r.getEndDate()) > 0 && r.getId() != reservation.getId()) {
                 result.addErrorMessage("Dates overlap with existing Reservation. Please select a different date.");
             }
         }
