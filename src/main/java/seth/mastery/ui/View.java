@@ -80,6 +80,10 @@ public class View {
         return reservation;
     }
 
+    public Reservation cancelReservation(List<Reservation> reservations, Host host) {
+        return getReservationSelection(reservations, host);
+    }
+
     public String getEmail(String type) {
         String email = io.readRequiredString("Please enter " + type + "'s email: ");
         return email;

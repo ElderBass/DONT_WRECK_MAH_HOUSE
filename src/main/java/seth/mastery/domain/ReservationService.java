@@ -49,7 +49,17 @@ public class ReservationService {
         if (reservationRepo.update(reservation)) {
             result.setPayload(reservation);
         }
+        return result;
+    }
 
+    public Result delete(Reservation reservation) throws DataAccessException {
+        Result result = new Result();
+        boolean isDeleted = reservationRepo.delete(reservation);
+        if (!isDeleted) {
+            result.addErrorMessage("Reservation " + reservation.getId() + " not in database.");
+        }
+        System.out.println();
+        System.out.println("Reservation " + reservation.getId() + " has been deleted.");
         return result;
     }
 
@@ -139,6 +149,7 @@ public class ReservationService {
         return result;
     }
 // TODO may need to add a case where startDate = existing date and endDate = existing date as well
+    // TODO actually this should allow for a startDate to be the same as an existing endDate and vice versa
     private Result validateDates(Reservation reservation, Result<Reservation> result) {
 
         if (reservation.getStartDate().compareTo(LocalDate.now()) < 0) {

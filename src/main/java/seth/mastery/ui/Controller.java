@@ -54,7 +54,7 @@ public class Controller {
                     editReservation();
                     break;
                 case CANCEL_RESERVATION:
-                   // cancelReservation();
+                    cancelReservation();
                     break;
             }
         } while (option != MenuOption.EXIT);
@@ -114,6 +114,21 @@ public class Controller {
         List<Reservation> reservations = reservationService.findAll(host.getId());
         Reservation reservation = view.editReservation(reservations, host);
         Result<Reservation> resResult = reservationService.update(reservation);
+        view.displayResult(resResult);
+    }
+
+    private void cancelReservation() throws DataAccessException {
+        view.displayHeader(MenuOption.CANCEL_RESERVATION.getMessage());
+        Result hostResult = getGuestOrHostFromEmail("Host");
+        if (!hostResult.isSuccess()) {
+            view.displayResult(hostResult);
+            return;
+        }
+
+        Host host = (Host) hostResult.getPayload();
+        List<Reservation> reservations = reservationService.findAll(host.getId());
+        Reservation reservation = view.cancelReservation(reservations, host);
+        Result<Reservation> resResult = reservationService.delete(reservation);
         view.displayResult(resResult);
     }
 
