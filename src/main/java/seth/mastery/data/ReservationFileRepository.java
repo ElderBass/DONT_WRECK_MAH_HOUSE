@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +31,9 @@ public class ReservationFileRepository implements ReservationRepository {
     private GuestFileRepository guestRepo;
     private HostFileRepository hostRepo;
 
-    final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+    private static final String INVALID_DATE
+            = "[INVALID] Enter a date in MM/dd/yyyy format.";
 
     @Autowired
     public ReservationFileRepository(@Value("${reservationDirectory}")String directory, GuestFileRepository guestFileRepository, HostFileRepository hostFileRepository) {
@@ -85,7 +88,19 @@ public class ReservationFileRepository implements ReservationRepository {
     }
 
     @Override
-    public boolean delete(Reservation reservation) {
+    public boolean delete(Reservation reservation) throws DataAccessException {
+        if (reservation == null || reservation.getHost() == null) {
+            return false;
+        }
+        String hostId = reservation.getHost().getId();
+        List<Reservation> all = findAll(hostId);
+        for (int i = 0; i < all.size(); i++) {
+            if (all.get(i).getId() == reservation.getId()) {
+                all.remove(i);
+                writeAll(all, hostId);
+                return true;
+            }
+        }
         return false;
     }
 
@@ -127,10 +142,13 @@ public class ReservationFileRepository implements ReservationRepository {
     }
 
     private Reservation deserialize(String[] fields, String hostId) {
+
         Reservation result = new Reservation();
         result.setId(Integer.parseInt(fields[0]));
-        result.setStartDate(LocalDate.parse(fields[1], dtf));
-        result.setEndDate(LocalDate.parse(fields[2], dtf));
+
+        result.setStartDate(convertDateFormat(fields[1]));
+        result.setEndDate(convertDateFormat(fields[2]));
+
         result.setGuestId(Integer.parseInt(fields[3]));
         result.setTotal(new BigDecimal(fields[4]));
 
@@ -140,5 +158,15 @@ public class ReservationFileRepository implements ReservationRepository {
         Host host = hostRepo.findById(hostId);
         result.setHost(host);
         return result;
+    }
+
+    private LocalDate convertDateFormat(String date) {
+        DateTimeFormatter originalFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter newFormat = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        LocalDate oldDate = LocalDate.parse(date, originalFormat);
+        String newDate = newFormat.format(oldDate);
+
+        return LocalDate.parse(newDate, newFormat);
+
     }
 }

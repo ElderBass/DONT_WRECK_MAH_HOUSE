@@ -87,4 +87,25 @@ class ReservationFileRepositoryTest {
 
         assertFalse(resRepo.update(reservation));
     }
+
+    @Test
+    void shouldDeleteExistingReservation() throws DataAccessException {
+        List<Reservation> reservations = resRepo.findAll(hostId);
+        Reservation reservation = reservations.get(0);
+        boolean result = resRepo.delete(reservation);
+
+        assertTrue(result);
+    }
+
+    @Test
+    void shouldNotDeleteNonexistentReservation() throws DataAccessException {
+        Reservation reservation = new Reservation();
+        Host host = new Host();
+        host.setId(hostId);
+        reservation.setHost(host);
+        reservation.setId(30);
+        boolean result = resRepo.delete(reservation);
+
+        assertFalse(result);
+    }
 }
