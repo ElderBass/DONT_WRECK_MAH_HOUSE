@@ -24,7 +24,7 @@ public class GuestService {
         Result<Guest> result = new Result();
         Guest guest = repository.findByEmail(email);
         if (guest == null) {
-            result.addErrorMessage("No Guest found with email address \"" + email + "\". Please try again.");
+            result.addErrorMessage("No Guest found with email address \"" + email + "\".");
         } else {
             result.setPayload(guest);
         }

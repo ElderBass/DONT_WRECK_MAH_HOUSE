@@ -37,7 +37,6 @@ public class View {
         System.out.println();
         displayHeader(host.getLastName() + ", " + host.getEmail() + " - " + host.getCity() + ", " + host.getState());
         for (Reservation r : reservations) {
-            // ID: 8, 08/12/2020 - 08/18/2020, Guest: Carncross, Tremain, Email: tcarncross2@japanpost.jp
             System.out.printf("ID: %s | Dates: %s - %s | Guest: %s, %s - %s",
                     r.getId(),
                     r.getStartDate(),
@@ -47,6 +46,7 @@ public class View {
                     r.getGuest().getEmail());
             System.out.println();
         }
+        System.out.println();
     }
 
     // TODO need to figure out how to calculate value and set it.
@@ -88,12 +88,14 @@ public class View {
 
     public void displayResult(Result result) {
         if (result.isSuccess()) {
-            System.out.println("Operation Successful.");
+            System.out.println();
+            System.out.println("Operation Successful :)");
         } else {
             displayHeader("Errors");
             for (String msg : result.getErrorMessages()) {
                 System.out.printf("- %s%n", msg);
-                System.out.println("Could not perform operation. Please try again.");
+                System.out.println();
+                System.out.println("Could not perform operation. Please try again :(");
             }
         }
     }

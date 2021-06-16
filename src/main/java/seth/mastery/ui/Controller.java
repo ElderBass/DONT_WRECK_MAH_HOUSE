@@ -111,10 +111,6 @@ public class Controller {
             result = hostService.findByEmail(email);
         }
 
-        if (!result.isSuccess()) {
-            view.displayResult(result);
-            return result;
-        }
         return result;
     }
 

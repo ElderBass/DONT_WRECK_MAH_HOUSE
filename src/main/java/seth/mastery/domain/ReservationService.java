@@ -65,27 +65,27 @@ public class ReservationService {
 
     private Result validateNulls(Reservation reservation, Result<Reservation> result) {
         if (reservation == null) {
-            result.addErrorMessage("Reservation cannot be null. Please try again.");
+            result.addErrorMessage("Reservation cannot be null.");
             return result;
         }
 
         if (reservation.getGuest() == null) {
-            result.addErrorMessage("Reservation needs a Guest. Please try again.");
+            result.addErrorMessage("Reservation needs a Guest.");
             return result;
         }
 
         if (reservation.getStartDate() == null) {
-            result.addErrorMessage("Reservation must have a start date. Please try again.");
+            result.addErrorMessage("Reservation must have a start date.");
             return result;
         }
 
         if (reservation.getEndDate() == null) {
-            result.addErrorMessage("Reservation must have an end date. Please try again.");
+            result.addErrorMessage("Reservation must have an end date.");
             return result;
         }
 
         if (reservation.getTotal() == null) {
-            result.addErrorMessage("Total amount missing for reservation. Please try again.");
+            result.addErrorMessage("Total amount missing for reservation.");
             return result;
         }
         return result;
@@ -124,7 +124,7 @@ public class ReservationService {
 
         return result;
     }
-
+// TODO may need to add a case where startDate = existing date and endDate = existing date as well
     private Result validateDates(Reservation reservation, Result<Reservation> result) {
 
         if (reservation.getStartDate().compareTo(LocalDate.now()) < 0) {

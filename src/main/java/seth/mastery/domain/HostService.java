@@ -26,7 +26,7 @@ public class HostService {
         Result<Host> result = new Result();
         Host host = repository.findByEmail(email);
         if (host == null) {
-            result.addErrorMessage("No Host found with email address \"" + email + "\". Please try again.");
+            result.addErrorMessage("No Host found with email address \"" + email + "\".");
         } else {
             result.setPayload(host);
         }
