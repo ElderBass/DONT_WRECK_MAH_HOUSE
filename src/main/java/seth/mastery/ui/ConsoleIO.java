@@ -102,13 +102,27 @@ public class ConsoleIO {
         }
     }
 
-    public LocalDate readLocalDate(String prompt) {
+    public LocalDate readLocalDate(String prompt, boolean isRequired) {
+        String input = "";
         while (true) {
-            String input = readRequiredString(prompt);
-            try {
-                return LocalDate.parse(input, formatter);
-            } catch (DateTimeParseException ex) {
-                println(INVALID_DATE);
+            if (isRequired) {
+                input = readRequiredString(prompt);
+                try {
+                    return LocalDate.parse(input, formatter);
+                } catch (DateTimeParseException ex) {
+                    println(INVALID_DATE);
+                }
+            } else {
+                input = readString(prompt);
+                if (input.trim().length() == 0) {
+                    return null;
+                } else {
+                    try {
+                        return LocalDate.parse(input, formatter);
+                    } catch (DateTimeParseException ex) {
+                        println(INVALID_DATE);
+                    }
+                }
             }
         }
     }

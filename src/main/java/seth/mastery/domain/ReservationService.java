@@ -40,6 +40,19 @@ public class ReservationService {
         return result;
     }
 
+    public Result update(Reservation reservation) throws DataAccessException {
+        Result<Reservation> result = validate(reservation);
+        if(!result.isSuccess()) {
+            return result;
+        }
+
+        if (reservationRepo.update(reservation)) {
+            result.setPayload(reservation);
+        }
+
+        return result;
+    }
+
     // VALIDATION METHODS
     // ================================================================================================
 

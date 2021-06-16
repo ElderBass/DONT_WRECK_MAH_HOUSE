@@ -52,8 +52,8 @@ public class View {
     // TODO need to figure out how to calculate value and set it.
     public Reservation createReservation(Guest guest, Host host) {
         Reservation reservation = new Reservation();
-        LocalDate start = io.readLocalDate("Start Date [MM/dd/yyyy]: ");
-        LocalDate end = io.readLocalDate("End Date [MM/dd/yyyy]: ");
+        LocalDate start = io.readLocalDate("Start Date [MM/dd/yyyy]: ", true);
+        LocalDate end = io.readLocalDate("End Date [MM/dd/yyyy]: ", true);
 
         reservation.setHost(host);
         reservation.setGuest(guest);
@@ -65,12 +65,39 @@ public class View {
         return reservation;
     }
 
+    public Reservation editReservation(List<Reservation> reservations, Host host) {
+        // TODO flesh this out. Maybe make a separate "display update menu" method for capturing input selection
+        Reservation reservation = getReservation(reservations, host);
+
+        LocalDate start = io.readLocalDate("Enter Start Date [" + reservation.getStartDate() + ": ", false);
+        if (start != null) {
+            reservation.setStartDate(start);
+        }
+        LocalDate end = io.readLocalDate("Enter End Date [" + reservation.getEndDate() + ": ", false);
+        if (end != null) {
+            reservation.setEndDate(end);
+        }
+
+        return reservation;
+    }
+
     public String getEmail(String type) {
         String email = io.readRequiredString("Please enter " + type + "'s email: ");
         return email;
     }
 
+    private Reservation getReservation(List<Reservation> reservations, Host host) {
+        displayReservations(reservations, host);
+        int reservationId = io.readInt("Enter Reservation ID Number: ", 1, reservations.size());
 
+        Reservation reservation = null;
+        for (Reservation r : reservations) {
+            if (r.getId() == reservationId) {
+                reservation = r;
+            }
+        }
+        return reservation;
+    }
 
     // HELPER METHODS
     // =====================================================================================
