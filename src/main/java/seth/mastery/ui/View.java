@@ -61,6 +61,11 @@ public class View {
         reservation.setEndDate(end);
         reservation.setTotal(reservation.calculateTotal());
 
+        if (!confirmReservation(reservation)) {
+            System.out.println("No problem. Come back any time.");
+            return null;
+        }
+        System.out.println("Reservation " + reservation.getId() + " confirmed.");
         return reservation;
     }
 
@@ -82,6 +87,15 @@ public class View {
 
     public Reservation cancelReservation(List<Reservation> reservations, Host host) {
         return getReservationSelection(reservations, host);
+    }
+
+    private boolean confirmReservation(Reservation reservation) {
+        displayHeader("Confirm Reservation");
+        System.out.println("Start Date: " + reservation.getStartDate());
+        System.out.println("End Date: " + reservation.getEndDate());
+        System.out.println("Total Cost: $" + reservation.calculateTotal());
+
+        return io.readBoolean("Book Reservation? [y/n]: ");
     }
 
     public String getEmail(String type) {

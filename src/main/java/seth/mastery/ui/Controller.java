@@ -97,6 +97,11 @@ public class Controller {
         view.displayReservations(reservations, host);
 
         Reservation reservation = view.createReservation(guest, host);
+        if (reservation == null) {
+            System.out.println("Proceeding to Main Menu.");
+            System.out.println();
+            return;
+        }
         Result resResult = reservationService.add(reservation);
         view.displayResult(resResult);
     }

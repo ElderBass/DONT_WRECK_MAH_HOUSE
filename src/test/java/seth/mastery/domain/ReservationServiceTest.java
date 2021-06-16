@@ -216,4 +216,35 @@ class ReservationServiceTest {
     }
 
     // TODO need to test all the update stuff too!
+    @Test
+    void shouldNotUpdateEndDateLessThanStartDate() throws DataAccessException {
+
+    }
+
+    @Test
+    void shouldNotUpdateReservationInPast() throws DataAccessException {
+
+    }
+
+    @Test
+    void shouldNotUpdateReservationDuringExistingReservation() throws DataAccessException {
+
+    }
+
+    @Test
+    void shouldNotUpdateStartDateInsideExistingReservation() throws DataAccessException {
+
+    }
+
+    @Test
+    void shouldNotUpdateEndDateInsideExistingReservation() throws DataAccessException {
+
+    }
+
+    @Test
+    void shouldNotUpdateReservationThatContainsExistingReservation() throws DataAccessException {
+
+    }
+
+    // TODO need to test delete as well!
 }
