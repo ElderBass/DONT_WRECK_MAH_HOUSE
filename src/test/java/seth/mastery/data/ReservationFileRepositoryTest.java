@@ -79,4 +79,12 @@ class ReservationFileRepositoryTest {
         boolean actual = resRepo.update(reservation);
         assertEquals(true, actual);
     }
+
+    @Test
+    void shouldNotUpdateNonexistentReservation() throws DataAccessException {
+        Reservation reservation = new Reservation();
+        reservation.setId(20);
+
+        assertFalse(resRepo.update(reservation));
+    }
 }

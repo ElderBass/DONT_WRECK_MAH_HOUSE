@@ -70,6 +70,9 @@ public class ReservationFileRepository implements ReservationRepository {
 
     @Override
     public boolean update(Reservation reservation) throws DataAccessException {
+        if (reservation == null || reservation.getHost() == null) {
+            return false;
+        }
         List<Reservation> reservations = findAll(reservation.getHost().getId());
         for (int i = 0; i < reservations.size(); i++) {
             if (reservations.get(i).getId() == reservation.getId()) {
