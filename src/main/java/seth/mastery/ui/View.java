@@ -2,9 +2,11 @@ package seth.mastery.ui;
 
 import org.springframework.stereotype.Component;
 import seth.mastery.domain.Result;
+import seth.mastery.models.Guest;
 import seth.mastery.models.Host;
 import seth.mastery.models.Reservation;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Component
@@ -47,15 +49,28 @@ public class View {
         }
     }
 
-    public Reservation createReservation() {
+    // TODO need to figure out how to calculate value and set it.
+    public Reservation createReservation(Guest guest, Host host) {
         Reservation reservation = new Reservation();
+        LocalDate start = io.readLocalDate("Start Date [MM/dd/yyyy]: ");
+        LocalDate end = io.readLocalDate("End Date [MM/dd/yyyy]: ");
 
-        // TODO need to figure this shit out. Going to work out now though.
+        reservation.setHost(host);
+        reservation.setGuest(guest);
+        reservation.setGuestId(guest.getId());
+        reservation.setStartDate(start);
+        reservation.setEndDate(end);
+        reservation.setTotal(reservation.calculateTotal());
 
         return reservation;
     }
 
-    public String getEmail() { return io.readRequiredString("Please enter Host's email: "); }
+    public String getEmail(String type) {
+        String email = io.readRequiredString("Please enter " + type + "'s email: ");
+        return email;
+    }
+
+
 
     // HELPER METHODS
     // =====================================================================================

@@ -89,7 +89,7 @@ public class ConsoleIO {
             println(String.format(NUMBER_OUT_OF_RANGE, min, max));
         }
     }
-
+// TODO might not need this guy
     public boolean readBoolean(String prompt) {
         while (true) {
             String input = readRequiredString(prompt).toLowerCase();

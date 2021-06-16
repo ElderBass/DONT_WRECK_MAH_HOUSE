@@ -7,6 +7,7 @@ import seth.mastery.domain.GuestService;
 import seth.mastery.domain.HostService;
 import seth.mastery.domain.ReservationService;
 import seth.mastery.domain.Result;
+import seth.mastery.models.Guest;
 import seth.mastery.models.Host;
 import seth.mastery.models.Reservation;
 
@@ -63,7 +64,7 @@ public class Controller {
     // =================================================================================================
 
     private void viewReservations() {
-        String email = view.getEmail();
+        String email = view.getEmail("Host");
         Result result = hostService.findByEmail(email);
         if (!result.isSuccess()) {
             view.displayResult(result);
@@ -79,9 +80,42 @@ public class Controller {
 
     private void makeReservation() throws DataAccessException {
         view.displayHeader(MenuOption.MAKE_RESERVATION.getMessage());
-        Reservation reservation = view.createReservation();
-        Result result = reservationService.add(reservation);
-        view.displayResult(result);
 
+        Result guestResult = getGuestOrHostFromEmail("Guest");
+        if (!guestResult.isSuccess()) {
+            view.displayResult(guestResult);
+            return;
+        }
+        Result hostResult = getGuestOrHostFromEmail("Host");
+        if (!hostResult.isSuccess()) {
+            view.displayResult(hostResult);
+            return;
+        }
+        Guest guest = (Guest) guestResult.getPayload();
+        Host host = (Host) hostResult.getPayload();
+        List<Reservation> reservations = reservationService.findAll(host.getId());
+        view.displayReservations(reservations, host);
+
+        Reservation reservation = view.createReservation(guest, host);
+        Result resResult = reservationService.add(reservation);
+        view.displayResult(resResult);
     }
+
+    private Result getGuestOrHostFromEmail(String type) {
+        String email = view.getEmail(type);
+        Result result = new Result();
+        if (type.equals("Guest")) {
+            result = guestService.findByEmail(email);
+        }
+        if (type.equals("Host")) {
+            result = hostService.findByEmail(email);
+        }
+
+        if (!result.isSuccess()) {
+            view.displayResult(result);
+            return result;
+        }
+        return result;
+    }
+
 }

@@ -1,6 +1,7 @@
 package seth.mastery.models;
 
 import java.math.BigDecimal;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Period;
 
@@ -72,10 +73,24 @@ public class Reservation {
 
 // TODO come back to this
 
-//    private BigDecimal calculateTotal() {
-//        Period period = Period.between(startDate, endDate);
-//        BigDecimal daysOfStay = new BigDecimal(period.getDays());
-//        return
-//
-//    }
+    public BigDecimal calculateTotal() {
+
+        BigDecimal weekdays = new BigDecimal(0);
+        BigDecimal weekends = new BigDecimal(0);
+
+        for (LocalDate start = startDate; start.isBefore(endDate); start = start.plusDays(1)) {
+            if (start.getDayOfWeek().equals(DayOfWeek.MONDAY) || start.getDayOfWeek().equals(DayOfWeek.TUESDAY)
+            || start.getDayOfWeek().equals(DayOfWeek.WEDNESDAY) || start.getDayOfWeek().equals(DayOfWeek.THURSDAY)
+            || start.getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
+                weekdays = weekdays.add(new BigDecimal(1));
+            } else {
+                weekends = weekends.add(new BigDecimal(1));
+            }
+        }
+
+        BigDecimal weekdayCost = host.getStandardRate().multiply(weekdays);
+        BigDecimal weekendCost = host.getStandardRate().multiply(weekends);
+
+        return weekdayCost.add(weekendCost);
+    }
 }

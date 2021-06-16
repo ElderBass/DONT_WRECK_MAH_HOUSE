@@ -44,7 +44,6 @@ public class GuestFileRepository implements GuestRepository {
                 .sorted(Comparator.comparing(Guest::getLastName).thenComparing(Guest::getFirstName))
                 .collect(Collectors.toList());
         return result;
-
     }
 
     @Override
@@ -60,6 +59,12 @@ public class GuestFileRepository implements GuestRepository {
 
     @Override
     public Guest findByEmail(String email) {
+        List<Guest> all = findAll();
+        for (Guest g : all) {
+            if (g.getEmail().equals(email)) {
+                return g;
+            }
+        }
         return null;
     }
 
