@@ -21,6 +21,7 @@ class ReservationServiceTest {
     private static final String hostId = "498604db-b6d6-4599-a503-3d8190fda823";
 
     private ReservationService service;
+    private Guest guest1Copy = new Guest(GuestRepositoryDouble.GUEST1);
 
     @BeforeEach
     void setUp() {
@@ -153,13 +154,13 @@ class ReservationServiceTest {
     @Test
     void shouldNotAddEmptyGuestEmail() throws DataAccessException {
         Reservation reservation = new Reservation();
-        Guest guest = GuestRepositoryDouble.GUEST1;
-        guest.setEmail("");
+
+        guest1Copy.setEmail("");
 
         reservation.setId(3);
-        reservation.setGuest(guest);
+        reservation.setGuest(guest1Copy);
         reservation.setHost(HostRepositoryDouble.HOST);
-        reservation.setGuestId(guest.getId());
+        reservation.setGuestId(guest1Copy.getId());
         reservation.setStartDate(LocalDate.of(2021, 6, 18));
         reservation.setEndDate(LocalDate.of(2021, 6, 20));
         reservation.setTotal(new BigDecimal(100.00));
@@ -172,12 +173,12 @@ class ReservationServiceTest {
     @Test
     void shouldNotAddEmptyGuestName() throws DataAccessException {
         Reservation reservation = new Reservation();
-        Guest guest = GuestRepositoryDouble.GUEST1;
-        guest.setFirstName("");
+
+        guest1Copy.setFirstName("");
 
         reservation.setId(3);
-        reservation.setGuest(guest);
-        reservation.setGuestId(guest.getId());
+        reservation.setGuest(guest1Copy);
+        reservation.setGuestId(guest1Copy.getId());
         reservation.setStartDate(LocalDate.of(2021, 6, 18));
         reservation.setEndDate(LocalDate.of(2021, 6, 20));
         reservation.setTotal(new BigDecimal(100.00));
@@ -185,9 +186,9 @@ class ReservationServiceTest {
         Result<Reservation> result = service.add(reservation);
         assertFalse(result.isSuccess());
 
-        guest.setLastName("");
-        guest.setFirstName(GuestRepositoryDouble.GUEST1.getFirstName());
-        reservation.setGuest(guest);
+        guest1Copy.setLastName("");
+        guest1Copy.setFirstName(GuestRepositoryDouble.GUEST1.getFirstName());
+        reservation.setGuest(guest1Copy);
 
         result = service.add(reservation);
         assertFalse(result.isSuccess());

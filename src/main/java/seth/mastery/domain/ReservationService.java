@@ -97,6 +97,11 @@ public class ReservationService {
             return result;
         }
 
+        if (reservation.getHost() == null) {
+            result.addErrorMessage("Host cannot be null.");
+            return result;
+        }
+
         if (reservation.getGuest() == null) {
             result.addErrorMessage("Reservation needs a Guest.");
             return result;
