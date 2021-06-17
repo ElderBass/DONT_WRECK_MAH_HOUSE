@@ -17,7 +17,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class ReservationFileRepository implements ReservationRepository {
@@ -25,6 +27,7 @@ public class ReservationFileRepository implements ReservationRepository {
     private final String HEADER = "id,start_date,end_date,guest_id,total";
     private String directory;
 
+    // TODO figure out if I need these or not
     private final String GUEST_PATH = "./data/guests.csv";
     private final String HOST_PATH = "./data/hosts.csv";
 
@@ -59,7 +62,10 @@ public class ReservationFileRepository implements ReservationRepository {
         } catch (IOException ex) {
             // don't throw on read
         }
-        return result;
+        List<Reservation> sorted = result.stream()
+                .sorted(Comparator.comparing(Reservation::getStartDate))
+                .collect(Collectors.toList());
+        return sorted;
     }
 
     @Override

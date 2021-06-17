@@ -18,8 +18,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ReservationFileRepositoryTest {
 
-    // TODO make a copy of data files..
-
     private String RES_TEST_PATH = "./data/reservations-test-data";
     private String RES_SEED_PATH = "./data/reservations-seed-3edda6bc-ab95-49a8-8962-d50b53f84b15.csv";
 

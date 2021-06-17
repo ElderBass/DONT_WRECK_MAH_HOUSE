@@ -57,6 +57,38 @@ class ReservationServiceTest {
     }
 
     @Test
+    void shouldAddStartDateOnExistingEndDate() throws DataAccessException {
+        Reservation reservation = new Reservation();
+
+        reservation.setId(3);
+        reservation.setHost(HostRepositoryDouble.HOST);
+        reservation.setGuest(GuestRepositoryDouble.GUEST1);
+        reservation.setGuestId(GuestRepositoryDouble.GUEST1.getId());
+        reservation.setStartDate(LocalDate.of(2021, 9, 15));
+        reservation.setEndDate(LocalDate.of(2021, 9, 18));
+        reservation.setTotal(reservation.calculateTotal());
+
+        Result result = service.add(reservation);
+        assertTrue(result.isSuccess());
+    }
+
+    @Test
+    void shouldAddEndDateOnExistingStartDate() throws DataAccessException {
+        Reservation reservation = new Reservation();
+
+        reservation.setId(3);
+        reservation.setHost(HostRepositoryDouble.HOST);
+        reservation.setGuest(GuestRepositoryDouble.GUEST1);
+        reservation.setGuestId(GuestRepositoryDouble.GUEST1.getId());
+        reservation.setStartDate(LocalDate.of(2021, 9, 4));
+        reservation.setEndDate(LocalDate.of(2021, 9, 9));
+        reservation.setTotal(reservation.calculateTotal());
+
+        Result result = service.add(reservation);
+        assertTrue(result.isSuccess());
+    }
+
+    @Test
     void shouldNotAddNullReservation() throws DataAccessException {
         Reservation reservation = null;
         Result<Reservation> result = service.add(reservation);
@@ -406,7 +438,7 @@ class ReservationServiceTest {
     void shouldUpdateEndDateOnExistingStartDate() throws DataAccessException {
         Reservation reservation = new Reservation();
 
-        reservation.setId(1001);
+        reservation.setId(1);
         reservation.setHost(HostRepositoryDouble.HOST);
         reservation.setGuest(GuestRepositoryDouble.GUEST1);
         reservation.setGuestId(GuestRepositoryDouble.GUEST1.getId());
