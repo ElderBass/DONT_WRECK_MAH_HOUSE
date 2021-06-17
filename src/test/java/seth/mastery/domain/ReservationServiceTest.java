@@ -29,6 +29,9 @@ class ReservationServiceTest {
         assertEquals(2, actual);
     }
 
+    // "ADD" TESTS
+    // =====================================================================================
+
     @Test
     void shouldAddReservation() throws DataAccessException {
         Reservation reservation = new Reservation();
@@ -124,7 +127,7 @@ class ReservationServiceTest {
         assertFalse(result.isSuccess());
     }
 
-    // TODO make sure these tests for add are exhaustive
+    // TODO make sure these tests for add are exhaustive - have shouldAdd tests for startDate = existing endDate and the inverse
 
     @Test
     void shouldNotAddReservationInPast() throws DataAccessException{
@@ -216,6 +219,9 @@ class ReservationServiceTest {
         Result<Reservation> result = service.add(reservation);
         assertFalse(result.isSuccess());
     }
+
+    // "UPDATE" TESTS
+    // ====================================================================================================
 
     @Test
     void shouldNotUpdateReservationInPast() throws DataAccessException {
@@ -351,5 +357,6 @@ class ReservationServiceTest {
         assertTrue(result.isSuccess());
     }
 
-    // TODO need to test delete as well!
+    // "DELETE" TESTS
+    // =========================================================================================================
 }

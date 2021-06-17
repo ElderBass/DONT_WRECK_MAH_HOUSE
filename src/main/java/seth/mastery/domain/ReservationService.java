@@ -148,8 +148,8 @@ public class ReservationService {
 
         return result;
     }
-// TODO may need to add a case where startDate = existing date and endDate = existing date as well
-    // TODO actually this should allow for a startDate to be the same as an existing endDate and vice versa
+
+    // TODO probably need to make sure you can't update a PAST reservation!
     private Result validateDates(Reservation reservation, Result<Reservation> result) {
 
         if (reservation.getStartDate().compareTo(LocalDate.now()) < 0) {
@@ -176,4 +176,8 @@ public class ReservationService {
         }
         return result;
     }
+
+//    private Result validateUpdateDeletePastReservation(Reservation reservation, Result result) {
+//
+//    }
 }

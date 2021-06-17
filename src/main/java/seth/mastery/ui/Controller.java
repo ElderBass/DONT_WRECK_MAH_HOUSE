@@ -60,7 +60,7 @@ public class Controller {
         } while (option != MenuOption.EXIT);
     }
 
-    // MENU METHODS
+    // MENU SWITCH STATEMENT METHODS
     // =================================================================================================
 
     private void viewReservations() {
@@ -98,7 +98,7 @@ public class Controller {
 
         Reservation reservation = view.createReservation(guest, host);
         if (reservation == null) {
-            System.out.println("Proceeding to Main Menu.");
+            System.out.println("Proceeding to Main Menu...");
             System.out.println();
             return;
         }
@@ -133,10 +133,17 @@ public class Controller {
         Host host = (Host) hostResult.getPayload();
         List<Reservation> reservations = reservationService.findAll(host.getId());
         Reservation reservation = view.cancelReservation(reservations, host);
+        if (reservation == null) {
+            System.out.println("Proceeding to Main Menu...");
+            System.out.println();
+            return;
+        }
         Result<Reservation> resResult = reservationService.delete(reservation);
         view.displayResult(resResult);
     }
 
+    // HELPER METHODS
+    // ====================================================================================
     private Result getGuestOrHostFromEmail(String type) {
         String email = view.getEmail(type);
         Result result = new Result();
@@ -146,7 +153,6 @@ public class Controller {
         if (type.equals("Host")) {
             result = hostService.findByEmail(email);
         }
-
         return result;
     }
 

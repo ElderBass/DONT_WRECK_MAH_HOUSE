@@ -61,7 +61,7 @@ public class View {
         reservation.setEndDate(end);
         reservation.setTotal(reservation.calculateTotal());
 
-        if (!confirmReservation(reservation)) {
+        if (!confirmReservationCreation(reservation)) {
             System.out.println("No problem. Come back any time.");
             return null;
         }
@@ -70,7 +70,6 @@ public class View {
     }
 
     public Reservation editReservation(List<Reservation> reservations, Host host) {
-
         Reservation reservation = getReservationSelection(reservations, host);
 
         LocalDate start = io.readLocalDate("Enter Start Date [" + reservation.getStartDate() + "]: ", false);
@@ -81,15 +80,37 @@ public class View {
         if (end != null) {
             reservation.setEndDate(end);
         }
-
         return reservation;
     }
 
-    public Reservation cancelReservation(List<Reservation> reservations, Host host) {
-        return getReservationSelection(reservations, host);
+    public boolean confirmReservationCancellation(Reservation reservation) {
+        displayHeader("Confirm Cancellation");
+        System.out.println();
+
+        displayHeader(reservation.getHost().getLastName() + ", " + reservation.getHost().getEmail() +
+                " - " + reservation.getHost().getCity() + ", " + reservation.getHost().getState());
+
+        System.out.printf("ID: %s | Dates: %s - %s | Guest: %s, %s - %s",
+                reservation.getId(),
+                reservation.getStartDate(),
+                reservation.getEndDate(),
+                reservation.getGuest().getLastName(),
+                reservation.getGuest().getFirstName(),
+                reservation.getGuest().getEmail());
+        System.out.println();
+        return io.readBoolean("Cancel this reservation? [y/n]: ");
     }
 
-    private boolean confirmReservation(Reservation reservation) {
+    public Reservation cancelReservation(List<Reservation> reservations, Host host) {
+        Reservation reservation = getReservationSelection(reservations, host);
+        if (!confirmReservationCancellation(reservation)) {
+            System.out.println("Reservation still booked.");
+            return null;
+        }
+        return reservation;
+    }
+
+    private boolean confirmReservationCreation(Reservation reservation) {
         displayHeader("Confirm Reservation");
         System.out.println("Start Date: " + reservation.getStartDate());
         System.out.println("End Date: " + reservation.getEndDate());
