@@ -19,7 +19,7 @@ public class ReservationRepositoryDouble implements ReservationRepository {
         reservation.setGuest(GuestRepositoryDouble.GUEST1);
         reservation.setGuestId(GuestRepositoryDouble.GUEST1.getId());
         reservation.setStartDate(LocalDate.of(2021, 11, 1));
-        reservation.setEndDate(LocalDate.of(2021, 11, 8));
+        reservation.setEndDate(LocalDate.of(2021, 11, 10));
         reservation.setTotal(reservation.calculateTotal());
         reservations.add(reservation);
 

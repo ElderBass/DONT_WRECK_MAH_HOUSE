@@ -88,7 +88,6 @@ public class ReservationService {
         if (!result.isSuccess()) {
             return result;
         }
-
         return result;
     }
 
@@ -171,14 +170,17 @@ public class ReservationService {
 
         List<Reservation> all = reservationRepo.findAll(reservation.getHost().getId());
         for (Reservation r : all) {
-            if ((r.getStartDate().compareTo(reservation.getStartDate()) > 0 && r.getEndDate().compareTo(reservation.getEndDate()) < 0)
+            // Checking to see if incoming reservation dates are within an existing set of dates
+            if ((r.getStartDate().compareTo(reservation.getStartDate()) >= 0 && r.getEndDate().compareTo(reservation.getEndDate()) <= 0)
                     || (r.getStartDate().compareTo(reservation.getStartDate()) <= 0 && r.getEndDate().compareTo(reservation.getEndDate()) >= 0)
                     && r.getId() != reservation.getId()) {
                 result.addErrorMessage("Time slot already filled. Please select a different date.");
             }
+            // Checking to see if start date of incoming reservation is within an existing reservation's range
             if (reservation.getStartDate().compareTo(r.getStartDate()) < 0 && reservation.getEndDate().compareTo(r.getStartDate()) > 0 && r.getId() != reservation.getId()) {
                 result.addErrorMessage("Dates overlap with existing Reservation. Please select a different date.");
             }
+            // Checking to see if end date of incoming reservation is within an existing reservation's range
             if (reservation.getStartDate().compareTo(r.getEndDate()) < 0 && reservation.getEndDate().compareTo(r.getEndDate()) > 0 && r.getId() != reservation.getId()) {
                 result.addErrorMessage("Dates overlap with existing Reservation. Please select a different date.");
             }
