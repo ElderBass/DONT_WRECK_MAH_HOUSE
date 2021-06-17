@@ -92,7 +92,13 @@ public class Controller {
             return;
         } else {
             Guest guest = (Guest) result.getPayload();
-            List<Reservation> reservations = reservationService.findAllReservationsByGuest(guest);
+            Result findAllResult = reservationService.findAllReservationsByGuest(guest);
+            if (!result.isSuccess()) {
+                System.out.println("Proceeding to Main Menu...");
+                System.out.println();
+                return;
+            }
+            List<Reservation> reservations = (List<Reservation>) findAllResult.getPayload();
             view.displayReservations(reservations, guest, true);
             view.enterToContinue();
         }

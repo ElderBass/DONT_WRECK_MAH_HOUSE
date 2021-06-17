@@ -28,7 +28,6 @@ public class GuestService {
         } else {
             result.setPayload(guest);
         }
-
         return result;
     }
 }

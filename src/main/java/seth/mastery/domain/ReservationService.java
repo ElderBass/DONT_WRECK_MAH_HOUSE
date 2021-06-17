@@ -31,7 +31,16 @@ public class ReservationService {
         return reservationRepo.findAll(hostId);
     }
 
-    public List<Reservation> findAllReservationsByGuest(Guest guest) { return reservationRepo.findAllReservationsByGuest(guest); }
+    public Result findAllReservationsByGuest(Guest guest) {
+        Result result = new Result();
+        List<Reservation> reservations = reservationRepo.findAllReservationsByGuest(guest);
+        if (reservations.isEmpty()) {
+            result.addErrorMessage("Could not find any reservations for " + guest.getFirstName() + " " + guest.getLastName() + ".");
+            return result;
+        }
+        result.setPayload(reservations);
+        return result;
+    }
 
     public Result add(Reservation reservation) throws DataAccessException {
         Result<Reservation> result = validate(reservation);
