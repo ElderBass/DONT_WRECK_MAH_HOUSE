@@ -25,10 +25,6 @@ public class ReservationFileRepository implements ReservationRepository {
     private final String HEADER = "id,start_date,end_date,guest_id,total";
     private String directory;
 
-    // TODO figure out if I need these or not
-    private final String GUEST_PATH = "./data/guests.csv";
-    private final String HOST_PATH = "./data/hosts.csv";
-
     private GuestFileRepository guestRepo;
     private HostFileRepository hostRepo;
 

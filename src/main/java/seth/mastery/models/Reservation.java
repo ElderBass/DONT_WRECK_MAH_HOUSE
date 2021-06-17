@@ -71,7 +71,7 @@ public class Reservation {
         this.total = total;
     }
 
-// TODO come back to this
+// TODO come back to this - it should be working though
 
     public BigDecimal calculateTotal() {
 

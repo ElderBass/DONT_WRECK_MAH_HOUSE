@@ -24,6 +24,9 @@ public class ReservationService {
         this.guestRepo = guestRepo;
     }
 
+    // CRUD METHODS
+    // ======================================================================================================
+
     public List<Reservation> findAll(String hostId) {
         return reservationRepo.findAll(hostId);
     }
@@ -49,6 +52,8 @@ public class ReservationService {
         if (reservationRepo.update(reservation)) {
             result.setPayload(reservation);
         }
+        System.out.println();
+        System.out.println("Reservation " + reservation.getId() + " has been updated.");
         return result;
     }
 
@@ -83,7 +88,6 @@ public class ReservationService {
             return result;
         }
 
-        // TODO may need a different one for update? Or to tweak the one I already have...?
         result = validateDates(reservation, result);
         if (!result.isSuccess()) {
             return result;
@@ -162,7 +166,6 @@ public class ReservationService {
         return result;
     }
 
-    // TODO probably need to make sure you can't update a PAST reservation!
     private Result validateDates(Reservation reservation, Result<Reservation> result) {
 
         if (reservation.getStartDate().compareTo(LocalDate.now()) < 0) {
@@ -176,17 +179,16 @@ public class ReservationService {
         List<Reservation> all = reservationRepo.findAll(reservation.getHost().getId());
         for (Reservation r : all) {
             // Checking to see if incoming reservation dates are within an existing set of dates
-            if ((r.getStartDate().compareTo(reservation.getStartDate()) >= 0 && r.getEndDate().compareTo(reservation.getEndDate()) <= 0)
-                    || (r.getStartDate().compareTo(reservation.getStartDate()) <= 0 && r.getEndDate().compareTo(reservation.getEndDate()) >= 0)
-                    && r.getId() != reservation.getId()) {
+            if (r.getId() != reservation.getId() && ((r.getStartDate().compareTo(reservation.getStartDate()) >= 0 && r.getEndDate().compareTo(reservation.getEndDate()) <= 0)
+                    || (r.getStartDate().compareTo(reservation.getStartDate()) <= 0 && r.getEndDate().compareTo(reservation.getEndDate()) >= 0))) {
                 result.addErrorMessage("Time slot already filled. Please select a different date.");
             }
             // Checking to see if start date of incoming reservation is within an existing reservation's range
-            if (reservation.getStartDate().compareTo(r.getStartDate()) < 0 && reservation.getEndDate().compareTo(r.getStartDate()) > 0 && r.getId() != reservation.getId()) {
+            if (r.getId() != reservation.getId() && reservation.getStartDate().compareTo(r.getStartDate()) < 0 && reservation.getEndDate().compareTo(r.getStartDate()) > 0) {
                 result.addErrorMessage("Dates overlap with existing Reservation. Please select a different date.");
             }
             // Checking to see if end date of incoming reservation is within an existing reservation's range
-            if (reservation.getStartDate().compareTo(r.getEndDate()) < 0 && reservation.getEndDate().compareTo(r.getEndDate()) > 0 && r.getId() != reservation.getId()) {
+            if (r.getId() != reservation.getId() && reservation.getStartDate().compareTo(r.getEndDate()) < 0 && reservation.getEndDate().compareTo(r.getEndDate()) > 0) {
                 result.addErrorMessage("Dates overlap with existing Reservation. Please select a different date.");
             }
         }

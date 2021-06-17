@@ -63,6 +63,8 @@ public class Controller {
     // MENU SWITCH STATEMENT METHODS
     // =================================================================================================
 
+    //TODO some of these may be a bit long-winded...considering trimming or creating other helpers
+
     private void viewReservations() {
         String email = view.getEmail("Host");
         Result result = hostService.findByEmail(email);
@@ -118,6 +120,11 @@ public class Controller {
         Host host = (Host) hostResult.getPayload();
         List<Reservation> reservations = reservationService.findAll(host.getId());
         Reservation reservation = view.editReservation(reservations, host);
+        if (reservation == null) {
+            System.out.println("Proceeding to Main Menu...");
+            System.out.println();
+            return;
+        }
         Result<Reservation> resResult = reservationService.update(reservation);
         view.displayResult(resResult);
     }

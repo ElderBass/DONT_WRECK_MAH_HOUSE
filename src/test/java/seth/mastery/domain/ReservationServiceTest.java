@@ -31,7 +31,6 @@ class ReservationServiceTest {
                 new GuestRepositoryDouble());
     }
 
-
     @Test
     void shouldFindAll() {
         int actual = service.findAll(hostId).size();
@@ -216,9 +215,6 @@ class ReservationServiceTest {
         result = service.add(reservation);
         assertFalse(result.isSuccess());
     }
-
-
-    // TODO make sure these tests for add are exhaustive - have shouldAdd tests for startDate = existing endDate and the inverse
 
     @Test
     void shouldNotAddReservationInPast() throws DataAccessException {

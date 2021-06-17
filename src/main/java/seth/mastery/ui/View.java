@@ -73,14 +73,20 @@ public class View {
 
     public Reservation editReservation(List<Reservation> reservations, Host host) {
         Reservation reservation = getReservationSelection(reservations, host);
-
-        LocalDate start = io.readLocalDate("Enter Start Date [" + reservation.getStartDate() + "]: ", false);
+        // TODO reformat these dates into what we want...should just be a matter of calling my helper method
+        LocalDate start = io.readLocalDate("Enter Start Date [" + convertDateFormat(reservation.getStartDate()) + "]: ", false);
         if (start != null) {
             reservation.setStartDate(start);
         }
-        LocalDate end = io.readLocalDate("Enter End Date [" + reservation.getEndDate() + "]: ", false);
+        LocalDate end = io.readLocalDate("Enter End Date [" + convertDateFormat(reservation.getEndDate()) + "]: ", false);
         if (end != null) {
             reservation.setEndDate(end);
+        }
+        // Need to recalculate total after new dates have been set
+        reservation.setTotal(reservation.calculateTotal());
+        if (!confirmReservationEdits(reservation)) {
+            System.out.println("No problem. Come back any time.");
+            return null;
         }
         return reservation;
     }
@@ -114,13 +120,24 @@ public class View {
         return reservation;
     }
 
+// TODO could probably wrap these two into one method, passing in a header string and a prompt string as params
+
     private boolean confirmReservationCreation(Reservation reservation) {
         displayHeader("Confirm Reservation");
-        System.out.println("Start Date: " + reservation.getStartDate());
-        System.out.println("End Date: " + reservation.getEndDate());
+        System.out.println("Start Date: " + convertDateFormat(reservation.getStartDate()));
+        System.out.println("End Date: " + convertDateFormat(reservation.getEndDate()));
         System.out.println("Total Cost: $" + reservation.calculateTotal());
 
         return io.readBoolean("Book Reservation? [y/n]: ");
+    }
+
+    private boolean confirmReservationEdits(Reservation reservation) {
+        displayHeader("Confirm Changes");
+        System.out.println("Start Date: " + convertDateFormat(reservation.getStartDate()));
+        System.out.println("End Date: " + convertDateFormat(reservation.getEndDate()));
+        System.out.println("Total Cost: $" + reservation.calculateTotal());
+
+        return io.readBoolean("Save Edits? [y/n]: ");
     }
 
     public String getEmail(String type) {
