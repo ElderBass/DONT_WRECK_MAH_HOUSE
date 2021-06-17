@@ -11,4 +11,6 @@ public interface GuestRepository {
     Guest findById(int id);
 
     Guest findByEmail(String email);
+
+    Guest add(Guest guest) throws DataAccessException;
 }

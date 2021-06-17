@@ -1,6 +1,7 @@
 package seth.mastery.domain;
 
 import org.springframework.stereotype.Service;
+import seth.mastery.data.DataAccessException;
 import seth.mastery.data.GuestRepository;
 import seth.mastery.models.Guest;
 import seth.mastery.models.Host;
@@ -30,4 +31,19 @@ public class GuestService {
         }
         return result;
     }
+
+    public Result add(Guest guest) throws DataAccessException {
+        Result result = validate(guest);
+        if(!result.isSuccess()) {
+            return result;
+        }
+
+        Guest added = repository.add(guest);
+        result.setPayload(guest);
+
+        return result;
+    }
+
+    // VALIDATION METHODS
+    // =========================================================================================================
 }

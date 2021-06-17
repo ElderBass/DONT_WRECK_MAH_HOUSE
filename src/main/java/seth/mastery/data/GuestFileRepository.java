@@ -4,10 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import seth.mastery.models.Guest;
+import seth.mastery.models.Reservation;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 public class GuestFileRepository implements GuestRepository {
 
     private String filePath;
+    private final String HEADER = "guest_id,first_name,last_name,email,phone,state";
 
     @Autowired
     public GuestFileRepository(@Value("${guestFilePath}")String filePath) { this.filePath = filePath; }
@@ -65,6 +68,48 @@ public class GuestFileRepository implements GuestRepository {
             }
         }
         return null;
+    }
+
+    @Override
+    public Guest add(Guest guest) throws DataAccessException {
+        List<Guest> guests = findAll();
+        guest.setId(getNextId(guests));
+        guests.add(guest);
+        writeAll(guests);
+        return guest;
+    }
+
+    // HELPER METHODS
+    // =============================================================================================================
+
+    private void writeAll(List<Guest> guests) throws DataAccessException {
+        try (PrintWriter writer = new PrintWriter(filePath)) {
+            writer.println(HEADER);
+            for (Guest g : guests) {
+                writer.println(serialize(g));
+            }
+        } catch (IOException ex) {
+            throw new DataAccessException(ex.getMessage(), ex);
+        }
+    }
+
+    private int getNextId(List<Guest> all) {
+        int nextId = 0;
+        for (Guest g : all) {
+            nextId = Math.max(nextId, g.getId());
+        }
+        return nextId + 1;
+    }
+
+    private String serialize(Guest g) {
+    // guest_id,first_name,last_name,email,phone,state
+        return String.format("%s,%s,%s,%s,%s,%s",
+                g.getId(),
+                g.getFirstName(),
+                g.getLastName(),
+                g.getEmail(),
+                g.getPhone(),
+                g.getState());
     }
 
     private Guest deserialize(String[] fields) {
