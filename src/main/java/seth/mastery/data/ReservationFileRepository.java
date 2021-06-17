@@ -160,13 +160,14 @@ public class ReservationFileRepository implements ReservationRepository {
         return result;
     }
 
+    // TODO figure out why this isn't working...
     private LocalDate convertDateFormat(String date) {
         DateTimeFormatter originalFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter newFormat = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         LocalDate oldDate = LocalDate.parse(date, originalFormat);
-        String newDate = newFormat.format(oldDate);
-
-        return LocalDate.parse(newDate, newFormat);
+        String newDate = dtf.format(oldDate);
+        // this string newDate is indeed in the correct format of MM/dd/yyyy
+        // but this LocalDate.parse does not convert the string into the dtf format and reverts to yyyy-MM-dd
+        return LocalDate.parse(newDate, dtf);
 
     }
 }
