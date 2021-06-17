@@ -98,12 +98,14 @@ public class View {
                 reservation.getGuest().getFirstName(),
                 reservation.getGuest().getEmail());
         System.out.println();
+        System.out.println();
         return io.readBoolean("Cancel this reservation? [y/n]: ");
     }
 
     public Reservation cancelReservation(List<Reservation> reservations, Host host) {
         Reservation reservation = getReservationSelection(reservations, host);
         if (!confirmReservationCancellation(reservation)) {
+            System.out.println();
             System.out.println("Reservation still booked.");
             return null;
         }

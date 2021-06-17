@@ -54,6 +54,11 @@ public class ReservationService {
 
     public Result delete(Reservation reservation) throws DataAccessException {
         Result result = new Result();
+        result = validateDates(reservation, result);
+        if (!result.isSuccess()) {
+            return result;
+        }
+
         boolean isDeleted = reservationRepo.delete(reservation);
         if (!isDeleted) {
             result.addErrorMessage("Reservation " + reservation.getId() + " not in database.");
