@@ -34,19 +34,36 @@ public class View {
         return MenuOption.fromValue(io.readInt(message, min, max));
     }
 
-    public void displayReservations(List<Reservation> reservations, Host host) {
+    // CRUD METHODS
+    // ==============================================================================================
+
+    public void displayReservations(List<Reservation> reservations, Host host, boolean showAll) {
         displayHeader(MenuOption.VIEW_HOST_RESERVATIONS.getMessage());
         System.out.println();
         displayHeader(host.getLastName() + ", " + host.getEmail() + " - " + host.getCity() + ", " + host.getState());
         for (Reservation r : reservations) {
-            System.out.printf("ID: %s | Dates: %s - %s | Guest: %s, %s - %s",
-                    r.getId(),
-                    convertDateFormat(r.getStartDate()),
-                    convertDateFormat(r.getEndDate()),
-                    r.getGuest().getLastName(),
-                    r.getGuest().getFirstName(),
-                    r.getGuest().getEmail());
-            System.out.println();
+            // Do this if statement to only retrieve reservations in the future
+            if (showAll) {
+                System.out.printf("ID: %s | Dates: %s - %s | Guest: %s, %s - %s",
+                        r.getId(),
+                        convertDateFormat(r.getStartDate()),
+                        convertDateFormat(r.getEndDate()),
+                        r.getGuest().getLastName(),
+                        r.getGuest().getFirstName(),
+                        r.getGuest().getEmail());
+                System.out.println();
+            } else {
+                if (r.getStartDate().compareTo(LocalDate.now()) > 0) {
+                    System.out.printf("ID: %s | Dates: %s - %s | Guest: %s, %s - %s",
+                            r.getId(),
+                            convertDateFormat(r.getStartDate()),
+                            convertDateFormat(r.getEndDate()),
+                            r.getGuest().getLastName(),
+                            r.getGuest().getFirstName(),
+                            r.getGuest().getEmail());
+                    System.out.println();
+                }
+            }
         }
         System.out.println();
     }
@@ -63,7 +80,7 @@ public class View {
         reservation.setEndDate(end);
         reservation.setTotal(reservation.calculateTotal());
 
-        if (!confirmReservationCreation(reservation)) {
+        if (!confirmReservationCreationAndEdits(reservation, "Confirm Reservation", "Book this Reservation?")) {
             System.out.println("No problem. Come back any time.");
             return null;
         }
@@ -73,7 +90,7 @@ public class View {
 
     public Reservation editReservation(List<Reservation> reservations, Host host) {
         Reservation reservation = getReservationSelection(reservations, host);
-        // TODO reformat these dates into what we want...should just be a matter of calling my helper method
+
         LocalDate start = io.readLocalDate("Enter Start Date [" + convertDateFormat(reservation.getStartDate()) + "]: ", false);
         if (start != null) {
             reservation.setStartDate(start);
@@ -84,14 +101,27 @@ public class View {
         }
         // Need to recalculate total after new dates have been set
         reservation.setTotal(reservation.calculateTotal());
-        if (!confirmReservationEdits(reservation)) {
+        if (!confirmReservationCreationAndEdits(reservation, "Confirm Edits", "Save Changes?")) {
             System.out.println("No problem. Come back any time.");
             return null;
         }
         return reservation;
     }
 
-    public boolean confirmReservationCancellation(Reservation reservation) {
+    public Reservation cancelReservation(List<Reservation> reservations, Host host) {
+        Reservation reservation = getReservationSelection(reservations, host);
+        if (!confirmReservationCancellation(reservation)) {
+            System.out.println();
+            System.out.println("Reservation still booked.");
+            return null;
+        }
+        return reservation;
+    }
+
+    // CONFIRMATION METHODS
+    // ==============================================================================================
+
+    private boolean confirmReservationCancellation(Reservation reservation) {
         displayHeader("Confirm Cancellation");
         System.out.println();
 
@@ -110,35 +140,18 @@ public class View {
         return io.readBoolean("Cancel this reservation? [y/n]: ");
     }
 
-    public Reservation cancelReservation(List<Reservation> reservations, Host host) {
-        Reservation reservation = getReservationSelection(reservations, host);
-        if (!confirmReservationCancellation(reservation)) {
-            System.out.println();
-            System.out.println("Reservation still booked.");
-            return null;
-        }
-        return reservation;
-    }
-
-// TODO could probably wrap these two into one method, passing in a header string and a prompt string as params
-
-    private boolean confirmReservationCreation(Reservation reservation) {
-        displayHeader("Confirm Reservation");
+    private boolean confirmReservationCreationAndEdits(Reservation reservation, String header, String prompt) {
+        displayHeader(header);
         System.out.println("Start Date: " + convertDateFormat(reservation.getStartDate()));
         System.out.println("End Date: " + convertDateFormat(reservation.getEndDate()));
         System.out.println("Total Cost: $" + reservation.calculateTotal());
 
-        return io.readBoolean("Book Reservation? [y/n]: ");
+        return io.readBoolean(prompt + " [y/n]: ");
     }
 
-    private boolean confirmReservationEdits(Reservation reservation) {
-        displayHeader("Confirm Changes");
-        System.out.println("Start Date: " + convertDateFormat(reservation.getStartDate()));
-        System.out.println("End Date: " + convertDateFormat(reservation.getEndDate()));
-        System.out.println("Total Cost: $" + reservation.calculateTotal());
 
-        return io.readBoolean("Save Edits? [y/n]: ");
-    }
+    // HELPER METHODS
+    // =====================================================================================
 
     public String getEmail(String type) {
         String email = io.readRequiredString("Please enter " + type + "'s email: ");
@@ -146,7 +159,7 @@ public class View {
     }
 
     private Reservation getReservationSelection(List<Reservation> reservations, Host host) {
-        displayReservations(reservations, host);
+        displayReservations(reservations, host, false);
         int reservationId = io.readInt("Enter Reservation ID Number: ", 1, reservations.size());
 
         Reservation reservation = null;
@@ -157,9 +170,6 @@ public class View {
         }
         return reservation;
     }
-
-    // HELPER METHODS
-    // =====================================================================================
 
     public void displayHeader(String message) {
         io.println("");

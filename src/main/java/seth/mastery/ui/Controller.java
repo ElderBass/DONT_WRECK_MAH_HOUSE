@@ -75,7 +75,7 @@ public class Controller {
             Host host = (Host) result.getPayload();
             String hostId = host.getId();
             List<Reservation> reservations = reservationService.findAll(hostId);
-            view.displayReservations(reservations, host);
+            view.displayReservations(reservations, host, true);
             view.enterToContinue();
         }
     }
@@ -96,7 +96,7 @@ public class Controller {
         Guest guest = (Guest) guestResult.getPayload();
         Host host = (Host) hostResult.getPayload();
         List<Reservation> reservations = reservationService.findAll(host.getId());
-        view.displayReservations(reservations, host);
+        view.displayReservations(reservations, host, false);
 
         Reservation reservation = view.createReservation(guest, host);
         if (reservation == null) {
