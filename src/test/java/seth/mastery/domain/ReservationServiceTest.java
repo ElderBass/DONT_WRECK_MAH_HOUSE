@@ -1,5 +1,6 @@
 package seth.mastery.domain;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import seth.mastery.data.DataAccessException;
 import seth.mastery.data.GuestRepositoryDouble;
@@ -19,10 +20,16 @@ class ReservationServiceTest {
 
     private static final String hostId = "498604db-b6d6-4599-a503-3d8190fda823";
 
-    ReservationService service = new ReservationService(
-            new ReservationRepositoryDouble(),
-            new HostRepositoryDouble(),
-            new GuestRepositoryDouble());
+    private ReservationService service;
+
+    @BeforeEach
+    void setUp() {
+        service = new ReservationService(
+                new ReservationRepositoryDouble(),
+                new HostRepositoryDouble(),
+                new GuestRepositoryDouble());
+    }
+
 
     @Test
     void shouldFindAll() {
@@ -181,7 +188,7 @@ class ReservationServiceTest {
     // TODO make sure these tests for add are exhaustive - have shouldAdd tests for startDate = existing endDate and the inverse
 
     @Test
-    void shouldNotAddReservationInPast() throws DataAccessException{
+    void shouldNotAddReservationInPast() throws DataAccessException {
         Reservation reservation = new Reservation();
 
         reservation.setId(3);
@@ -378,7 +385,8 @@ class ReservationServiceTest {
         assertFalse(result.isSuccess());
     }
 
-    @Test // I might be going crazy but when I run all tests, this one fails, but when I debug it, it succeeds
+    @Test
+        // I might be going crazy but when I run all tests, this one fails, but when I debug it, it succeeds
     void shouldUpdateStartDateOnExistingEndDate() throws DataAccessException {
         Reservation reservation = new Reservation();
 
