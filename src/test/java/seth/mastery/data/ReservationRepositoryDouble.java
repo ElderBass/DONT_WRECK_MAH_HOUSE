@@ -41,16 +41,26 @@ public class ReservationRepositoryDouble implements ReservationRepository {
 
     @Override
     public Reservation add(Reservation reservation) {
-        return null;
+        return reservation;
     }
 
     @Override
     public boolean update(Reservation reservation) {
+        for (int i = 0; i < reservations.size(); i++) {
+            if (reservations.get(i).getId() == reservation.getId()) {
+                return true;
+            }
+        }
         return false;
     }
 
     @Override
     public boolean delete(Reservation reservation) {
+        for (int i = 0; i < reservations.size(); i++) {
+            if (reservations.get(i).getId() == reservation.getId()) {
+                return true;
+            }
+        }
         return false;
     }
 }

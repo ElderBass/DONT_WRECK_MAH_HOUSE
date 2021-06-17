@@ -8,6 +8,7 @@ import seth.mastery.data.ReservationRepositoryDouble;
 import seth.mastery.models.Guest;
 import seth.mastery.models.Reservation;
 
+import java.awt.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -209,6 +210,7 @@ class ReservationServiceTest {
     void shouldNotAddReservationThatContainsExistingReservation() throws DataAccessException {
         Reservation reservation = new Reservation();
 
+        reservation.setId(3);
         reservation.setHost(HostRepositoryDouble.HOST);
         reservation.setGuest(GuestRepositoryDouble.GUEST1);
         reservation.setGuestId(GuestRepositoryDouble.GUEST1.getId());
@@ -227,7 +229,7 @@ class ReservationServiceTest {
     void shouldNotUpdateReservationInPast() throws DataAccessException {
         Reservation reservation = new Reservation();
 
-        reservation.setId(1001);
+        reservation.setId(1);
         reservation.setHost(HostRepositoryDouble.HOST);
         reservation.setGuest(GuestRepositoryDouble.GUEST1);
         reservation.setGuestId(GuestRepositoryDouble.GUEST1.getId());
@@ -244,7 +246,7 @@ class ReservationServiceTest {
 
         Reservation reservation = new Reservation();
 
-        reservation.setId(1001);
+        reservation.setId(1);
         reservation.setHost(HostRepositoryDouble.HOST);
         reservation.setGuest(GuestRepositoryDouble.GUEST1);
         reservation.setGuestId(GuestRepositoryDouble.GUEST1.getId());
@@ -261,7 +263,7 @@ class ReservationServiceTest {
 
         Reservation reservation = new Reservation();
 
-        reservation.setId(1001);
+        reservation.setId(1);
         reservation.setHost(HostRepositoryDouble.HOST);
         reservation.setGuest(GuestRepositoryDouble.GUEST1);
         reservation.setGuestId(GuestRepositoryDouble.GUEST1.getId());
@@ -278,7 +280,7 @@ class ReservationServiceTest {
 
         Reservation reservation = new Reservation();
 
-        reservation.setId(1001);
+        reservation.setId(1);
         reservation.setHost(HostRepositoryDouble.HOST);
         reservation.setGuest(GuestRepositoryDouble.GUEST1);
         reservation.setGuestId(GuestRepositoryDouble.GUEST1.getId());
@@ -292,10 +294,9 @@ class ReservationServiceTest {
 
     @Test
     void shouldNotUpdateEndDateInsideExistingReservation() throws DataAccessException {
-
         Reservation reservation = new Reservation();
 
-        reservation.setId(1001);
+        reservation.setId(1);
         reservation.setHost(HostRepositoryDouble.HOST);
         reservation.setGuest(GuestRepositoryDouble.GUEST1);
         reservation.setGuestId(GuestRepositoryDouble.GUEST1.getId());
@@ -309,10 +310,9 @@ class ReservationServiceTest {
 
     @Test
     void shouldNotUpdateReservationThatContainsExistingReservation() throws DataAccessException {
-        List<Reservation> all = service.findAll(hostId);
         Reservation reservation = new Reservation();
 
-        reservation.setId(1001);
+        reservation.setId(1);
         reservation.setHost(HostRepositoryDouble.HOST);
         reservation.setGuest(GuestRepositoryDouble.GUEST1);
         reservation.setGuestId(GuestRepositoryDouble.GUEST1.getId());
@@ -329,7 +329,7 @@ class ReservationServiceTest {
 
         Reservation reservation = new Reservation();
 
-        reservation.setId(1001);
+        reservation.setId(1);
         reservation.setHost(HostRepositoryDouble.HOST);
         reservation.setGuest(GuestRepositoryDouble.GUEST1);
         reservation.setGuestId(GuestRepositoryDouble.GUEST1.getId());
@@ -357,6 +357,38 @@ class ReservationServiceTest {
         assertTrue(result.isSuccess());
     }
 
+    @Test
+    void shouldUpdate() throws DataAccessException {
+        Reservation reservation = new Reservation();
+
+        reservation.setId(1);
+        reservation.setHost(HostRepositoryDouble.HOST);
+        reservation.setGuest(GuestRepositoryDouble.GUEST1);
+        reservation.setGuestId(GuestRepositoryDouble.GUEST1.getId());
+        reservation.setStartDate(LocalDate.of(2021, 11, 1));
+        reservation.setEndDate(LocalDate.of(2021, 11, 8));
+        reservation.setTotal(reservation.calculateTotal());
+
+        Result result = service.update(reservation);
+        assertTrue(result.isSuccess());
+    }
+
     // "DELETE" TESTS
     // =========================================================================================================
+
+    @Test
+    void shouldDelete() throws DataAccessException {
+        Reservation reservation = new Reservation();
+
+        reservation.setId(1);
+        reservation.setHost(HostRepositoryDouble.HOST);
+        reservation.setGuest(GuestRepositoryDouble.GUEST1);
+        reservation.setGuestId(GuestRepositoryDouble.GUEST1.getId());
+        reservation.setStartDate(LocalDate.of(2021, 11, 1));
+        reservation.setEndDate(LocalDate.of(2021, 11, 9));
+        reservation.setTotal(reservation.calculateTotal());
+
+        Result result = service.delete(reservation);
+        assertTrue(result.isSuccess());
+    }
 }

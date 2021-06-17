@@ -143,6 +143,10 @@ public class ReservationService {
             result.addErrorMessage("Guest must have a valid email address.");
         }
 
+        if (reservation.getId() <= 0) {
+            result.addErrorMessage("Reservation ID must be greater than 0.");
+        }
+
         if (reservation.getGuestId() <= 0) {
             result.addErrorMessage("Guest ID must be greater than 0.");
         }
@@ -182,7 +186,4 @@ public class ReservationService {
         return result;
     }
 
-//    private Result validateUpdateDeletePastReservation(Reservation reservation, Result result) {
-//
-//    }
 }
