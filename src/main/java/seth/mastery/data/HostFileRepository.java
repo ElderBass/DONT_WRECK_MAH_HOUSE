@@ -40,9 +40,9 @@ public class HostFileRepository implements HostRepository {
             // don't throw on read
         }
 
-        result = result.stream()
-                .sorted(Comparator.comparing(Host::getLastName))
-                .collect(Collectors.toList());
+//        result = result.stream()
+//                .sorted(Comparator.comparing(Host::getLastName))
+//                .collect(Collectors.toList());
         return result;
     }
 

@@ -67,7 +67,9 @@ public class ReservationFileRepository implements ReservationRepository {
         for (int i = 0; i < hosts.size(); i++) {
             List<Reservation> hostReservations = findAll(hosts.get(i).getId());
             for (int j = 0; j < hostReservations.size(); j++) {
-                if (hostReservations.get(j).getGuest().equals(guest)) {
+                Guest g = hostReservations.get(j).getGuest();
+                if (g.getFirstName().equals(guest.getFirstName()) && g.getLastName().equals(guest.getLastName())
+                    && g.getEmail().equals(guest.getEmail()) && g.getId() == guest.getId()) {
                     guestReservations.add(hostReservations.get(j));
                 }
             }

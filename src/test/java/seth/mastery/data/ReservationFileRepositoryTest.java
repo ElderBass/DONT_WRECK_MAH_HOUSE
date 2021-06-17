@@ -49,6 +49,14 @@ class ReservationFileRepositoryTest {
     }
 
     @Test
+    void shouldFindGuestReservations() throws DataAccessException {
+        Guest guest = guestRepo.findByEmail("dlynessy@icio.us");
+        int actual = resRepo.findAllReservationsByGuest(guest).size();
+
+        assertEquals(1, actual);
+    }
+
+    @Test
     void shouldAddReservation() throws DataAccessException {
         Reservation reservation = new Reservation();
         Host host = hostRepo.findById(hostId);
