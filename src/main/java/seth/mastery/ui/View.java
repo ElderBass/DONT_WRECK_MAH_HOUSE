@@ -44,24 +44,10 @@ public class View {
         for (Reservation r : reservations) {
             // Do this if statement to only retrieve reservations in the future
             if (showAll) {
-                System.out.printf("ID: %s | Dates: %s - %s | Guest: %s, %s - %s",
-                        r.getId(),
-                        convertDateFormat(r.getStartDate()),
-                        convertDateFormat(r.getEndDate()),
-                        r.getGuest().getLastName(),
-                        r.getGuest().getFirstName(),
-                        r.getGuest().getEmail());
-                System.out.println();
+                displayFormattedReservation(r);
             } else {
                 if (r.getStartDate().compareTo(LocalDate.now()) > 0) {
-                    System.out.printf("ID: %s | Dates: %s - %s | Guest: %s, %s - %s",
-                            r.getId(),
-                            convertDateFormat(r.getStartDate()),
-                            convertDateFormat(r.getEndDate()),
-                            r.getGuest().getLastName(),
-                            r.getGuest().getFirstName(),
-                            r.getGuest().getEmail());
-                    System.out.println();
+                    displayFormattedReservation(r);
                 }
             }
         }
@@ -128,14 +114,7 @@ public class View {
         displayHeader(reservation.getHost().getLastName() + ", " + reservation.getHost().getEmail() +
                 " - " + reservation.getHost().getCity() + ", " + reservation.getHost().getState());
 
-        System.out.printf("ID: %s | Dates: %s - %s | Guest: %s, %s - %s",
-                reservation.getId(),
-                reservation.getStartDate(),
-                reservation.getEndDate(),
-                reservation.getGuest().getLastName(),
-                reservation.getGuest().getFirstName(),
-                reservation.getGuest().getEmail());
-        System.out.println();
+        displayFormattedReservation(reservation);
         System.out.println();
         return io.readBoolean("Cancel this reservation? [y/n]: ");
     }
@@ -171,6 +150,17 @@ public class View {
         return reservation;
     }
 
+    private void displayFormattedReservation(Reservation r) {
+        System.out.printf("ID: %s | Dates: %s - %s | Guest: %s, %s - %s",
+                r.getId(),
+                convertDateFormat(r.getStartDate()),
+                convertDateFormat(r.getEndDate()),
+                r.getGuest().getLastName(),
+                r.getGuest().getFirstName(),
+                r.getGuest().getEmail());
+        System.out.println();
+    }
+    
     public void displayHeader(String message) {
         io.println("");
         io.println(message);
@@ -201,4 +191,5 @@ public class View {
     }
 
     private String convertDateFormat(LocalDate date) { return dtf.format(date); }
+
 }
