@@ -54,6 +54,23 @@ public class View {
         System.out.println();
     }
 
+    // Overload the above method here for displaying Reservations by Guest
+    public void displayReservations(List<Reservation> reservations, Guest guest, boolean showAll) {
+        displayHeader("Viewing Reservations for " + guest.getFirstName() + " " + guest.getLastName());
+        System.out.println();
+
+        for (Reservation r : reservations) {
+            if (showAll) {
+                displayFormattedReservation(r);
+            } else {
+                if (r.getStartDate().compareTo(LocalDate.now()) > 0) {
+                    displayFormattedReservation(r);
+                }
+            }
+        }
+        System.out.println();
+    }
+
     public Reservation createReservation(Guest guest, Host host) {
         Reservation reservation = new Reservation();
         LocalDate start = io.readLocalDate("Start Date [MM/dd/yyyy]: ", true);
@@ -160,7 +177,7 @@ public class View {
                 r.getGuest().getEmail());
         System.out.println();
     }
-    
+
     public void displayHeader(String message) {
         io.println("");
         io.println(message);

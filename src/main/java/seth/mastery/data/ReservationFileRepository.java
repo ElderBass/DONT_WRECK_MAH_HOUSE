@@ -60,6 +60,22 @@ public class ReservationFileRepository implements ReservationRepository {
     }
 
     @Override
+    public List<Reservation> findAllReservationsByGuest(Guest guest) {
+        List<Host> hosts = hostRepo.findAll();
+        List<Reservation> guestReservations = new ArrayList<>();
+
+        for (int i = 0; i < hosts.size(); i++) {
+            List<Reservation> hostReservations = findAll(hosts.get(i).getId());
+            for (int j = 0; j < hostReservations.size(); j++) {
+                if (hostReservations.get(j).getGuest().equals(guest)) {
+                    guestReservations.add(hostReservations.get(j));
+                }
+            }
+        }
+        return guestReservations;
+    }
+
+    @Override
     public Reservation add(Reservation reservation) throws DataAccessException {
         List<Reservation> reservations = findAll(reservation.getHost().getId());
         reservation.setId(getNextId(reservations));

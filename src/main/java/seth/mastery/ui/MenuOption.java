@@ -4,9 +4,10 @@ public enum MenuOption {
 
     EXIT(0, "Exit Program"),
     VIEW_HOST_RESERVATIONS(1, "View Reservations for a Host"),
-    MAKE_RESERVATION(2, "Make a Reservation"),
-    EDIT_RESERVATION(3, "Edit a Reservation"),
-    CANCEL_RESERVATION(4, "Cancel a Reservation");
+    VIEW_GUEST_RESERVATIONS(2, "View Reservations for a Guest"),
+    MAKE_RESERVATION(3, "Make a Reservation"),
+    EDIT_RESERVATION(4, "Edit a Reservation"),
+    CANCEL_RESERVATION(5, "Cancel a Reservation");
 
     private int value;
     private String message;

@@ -31,6 +31,8 @@ public class ReservationService {
         return reservationRepo.findAll(hostId);
     }
 
+    public List<Reservation> findAllReservationsByGuest(Guest guest) { return reservationRepo.findAllReservationsByGuest(guest); }
+
     public Result add(Reservation reservation) throws DataAccessException {
         Result<Reservation> result = validate(reservation);
         if (!result.isSuccess()) {

@@ -1,5 +1,6 @@
 package seth.mastery.data;
 
+import seth.mastery.models.Guest;
 import seth.mastery.models.Reservation;
 
 import java.time.LocalDate;
@@ -32,6 +33,11 @@ public class ReservationRepositoryDouble implements ReservationRepository {
         newReservation.setEndDate(LocalDate.of(2021, 9, 15));
         reservations.add(newReservation);
 
+    }
+
+    @Override
+    public List<Reservation> findAllReservationsByGuest(Guest guest) {
+        return null;
     }
 
     @Override

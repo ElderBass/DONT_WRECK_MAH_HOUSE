@@ -47,6 +47,9 @@ public class Controller {
                 case VIEW_HOST_RESERVATIONS:
                     viewReservations();
                     break;
+                case VIEW_GUEST_RESERVATIONS:
+                    viewReservationsByGuest();
+                    break;
                 case MAKE_RESERVATION:
                     makeReservation();
                     break;
@@ -76,6 +79,21 @@ public class Controller {
             String hostId = host.getId();
             List<Reservation> reservations = reservationService.findAll(hostId);
             view.displayReservations(reservations, host, true);
+            view.enterToContinue();
+        }
+    }
+
+    private void viewReservationsByGuest() {
+        view.displayHeader(MenuOption.VIEW_GUEST_RESERVATIONS.getMessage());
+        String email = view.getEmail("Guest");
+        Result result = guestService.findByEmail(email);
+        if (!result.isSuccess()) {
+            view.displayResult(result);
+            return;
+        } else {
+            Guest guest = (Guest) result.getPayload();
+            List<Reservation> reservations = reservationService.findAllReservationsByGuest(guest);
+            view.displayReservations(reservations, guest, true);
             view.enterToContinue();
         }
     }
