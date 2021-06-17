@@ -7,12 +7,14 @@ import seth.mastery.models.Host;
 import seth.mastery.models.Reservation;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Component
 public class View {
 
     private ConsoleIO io;
+    final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
     public View(ConsoleIO io) {
         this.io = io;
@@ -39,8 +41,8 @@ public class View {
         for (Reservation r : reservations) {
             System.out.printf("ID: %s | Dates: %s - %s | Guest: %s, %s - %s",
                     r.getId(),
-                    r.getStartDate(),
-                    r.getEndDate(),
+                    convertDateFormat(r.getStartDate()),
+                    convertDateFormat(r.getEndDate()),
                     r.getGuest().getLastName(),
                     r.getGuest().getFirstName(),
                     r.getGuest().getEmail());
@@ -170,4 +172,6 @@ public class View {
     public void enterToContinue() {
         io.readString("Press [Enter] to continue.");
     }
+
+    private String convertDateFormat(LocalDate date) { return dtf.format(date); }
 }

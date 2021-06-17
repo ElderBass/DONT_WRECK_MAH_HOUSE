@@ -14,8 +14,6 @@ import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -34,9 +32,6 @@ public class ReservationFileRepository implements ReservationRepository {
     private GuestFileRepository guestRepo;
     private HostFileRepository hostRepo;
 
-    final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-    private static final String INVALID_DATE
-            = "[INVALID] Enter a date in MM/dd/yyyy format.";
 
     @Autowired
     public ReservationFileRepository(@Value("${reservationDirectory}")String directory, GuestFileRepository guestFileRepository, HostFileRepository hostFileRepository) {
@@ -152,8 +147,8 @@ public class ReservationFileRepository implements ReservationRepository {
         Reservation result = new Reservation();
         result.setId(Integer.parseInt(fields[0]));
 
-        result.setStartDate(convertDateFormat(fields[1]));
-        result.setEndDate(convertDateFormat(fields[2]));
+        result.setStartDate(LocalDate.parse(fields[1]));
+        result.setEndDate(LocalDate.parse(fields[2]));
 
         result.setGuestId(Integer.parseInt(fields[3]));
         result.setTotal(new BigDecimal(fields[4]));
@@ -166,14 +161,4 @@ public class ReservationFileRepository implements ReservationRepository {
         return result;
     }
 
-    // TODO figure out why this isn't working...
-    private LocalDate convertDateFormat(String date) {
-        DateTimeFormatter originalFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate oldDate = LocalDate.parse(date, originalFormat);
-        String newDate = dtf.format(oldDate);
-        // this string newDate is indeed in the correct format of MM/dd/yyyy
-        // but this LocalDate.parse does not convert the string into the dtf format and reverts to yyyy-MM-dd
-        return LocalDate.parse(newDate, dtf);
-
-    }
 }
