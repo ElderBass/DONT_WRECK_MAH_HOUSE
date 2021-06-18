@@ -71,8 +71,6 @@ public class Reservation {
         this.total = total;
     }
 
-// TODO come back to this - it should be working though
-
     public BigDecimal calculateTotal() {
 
         BigDecimal weekdays = new BigDecimal(0);
@@ -89,7 +87,7 @@ public class Reservation {
         }
 
         BigDecimal weekdayCost = host.getStandardRate().multiply(weekdays);
-        BigDecimal weekendCost = host.getStandardRate().multiply(weekends);
+        BigDecimal weekendCost = host.getWeekendRate().multiply(weekends);
 
         return weekdayCost.add(weekendCost);
     }

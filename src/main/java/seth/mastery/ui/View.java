@@ -42,6 +42,11 @@ public class View {
         displayHeader(MenuOption.VIEW_HOST_RESERVATIONS.getMessage());
         System.out.println();
         displayHeader(host.getLastName() + ", " + host.getEmail() + " - " + host.getCity() + ", " + host.getState());
+        if (reservations == null || reservations.isEmpty()) {
+            System.out.println("No reservations for this host.");
+            System.out.println();
+            return;
+        }
         for (Reservation r : reservations) {
             // Do this if statement to only retrieve reservations in the future
             if (showAll) {
@@ -93,7 +98,7 @@ public class View {
             System.out.println("No problem. Come back any time.");
             return null;
         }
-        System.out.println("Reservation " + reservation.getId() + " confirmed.");
+
         return reservation;
     }
 
@@ -237,7 +242,7 @@ public class View {
         if (state.trim().length() > 0) {
             host.setState(state);
         }
-        String postalCode = io.readString("State [" + host.getPostalCode() + "]: ");
+        String postalCode = io.readString("Postal Code [" + host.getPostalCode() + "]: ");
         if (postalCode.trim().length() > 0) {
             host.setPostalCode(postalCode);
         }
@@ -255,9 +260,9 @@ public class View {
     
     public Host deleteHost(Host host) {
         displayHeader("Confirm Deletion");
-        System.out.printf("ID: %s | Name: %s | Email: %s | Phone: %s \n" +
-                        " Address: %s | City: %s | State: %s | Postal Code: %s \n" +
-                        "Standard Rate: %s | Weekend Rate: %s",
+        System.out.printf("ID: %s | Name: %s | Email: %s | Phone: %s\n" +
+                        "Address: %s | City: %s | State: %s | Postal Code: %s\n" +
+                        "Standard Rate: $%.2f | Weekend Rate: $%.2f",
                 host.getId(),
                 host.getLastName(),
                 host.getEmail(),
@@ -270,6 +275,7 @@ public class View {
                 host.getWeekendRate());
         System.out.println();
         boolean confirmDelete = io.readBoolean("Delete this Host from Database? [y/n]: ");
+        System.out.println();
 
         if (!confirmDelete) {
             System.out.println("Host " + host.getId() + " will remain in Database.");

@@ -50,7 +50,7 @@ public class ReservationService {
 
         Reservation added = reservationRepo.add(reservation);
         result.setPayload(added);
-
+        System.out.println("Reservation " + reservation.getId() + " confirmed.");
         return result;
     }
 
@@ -160,10 +160,6 @@ public class ReservationService {
             return result;
         } else if (guest.getEmail().equals("")) {
             result.addErrorMessage("Guest must have a valid email address.");
-        }
-
-        if (reservation.getId() <= 0) {
-            result.addErrorMessage("Reservation ID must be greater than 0.");
         }
 
         if (reservation.getGuestId() <= 0) {

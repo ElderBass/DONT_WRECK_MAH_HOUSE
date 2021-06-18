@@ -86,6 +86,8 @@ public class Controller {
 
     //TODO some of these may be a bit long-winded...considering trimming or creating other helpers
 
+    // RESERVATION METHODS ----------------------------------------------------------------------
+
     private void viewReservations() {
         String email = view.getEmail("Host");
         Result result = hostService.findByEmail(email);
@@ -191,6 +193,8 @@ public class Controller {
         view.displayResult(resResult);
     }
 
+    // GUEST METHODS ---------------------------------------------------------------------------------
+
     private void addGuest() throws DataAccessException {
         view.displayHeader(MenuOption.ADD_GUEST.getMessage());
         Guest guest = view.createGuest();
@@ -236,6 +240,8 @@ public class Controller {
         Result<Guest> result = guestService.delete(guest);
         view.displayResult(result);
     }
+
+    // HOST METHODS ------------------------------------------------------------------------------------
 
     private void addHost() throws DataAccessException {
         view.displayHeader(MenuOption.ADD_HOST.getMessage());

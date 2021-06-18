@@ -129,8 +129,12 @@ public class ReservationFileRepository implements ReservationRepository {
 
     private int getNextId(List<Reservation> all) {
         int nextId = 0;
-        for (Reservation r : all) {
-            nextId = Math.max(nextId, r.getId());
+        if (all == null || all.isEmpty()) {
+            return 1;
+        } else {
+            for (Reservation r : all) {
+                nextId = Math.max(nextId, r.getId());
+            }
         }
         return nextId + 1;
     }
