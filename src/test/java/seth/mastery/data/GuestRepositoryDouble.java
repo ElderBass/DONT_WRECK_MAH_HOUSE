@@ -36,11 +36,16 @@ public class GuestRepositoryDouble implements GuestRepository {
     // TODO Fix this before testing out Guest service
     @Override
     public Guest add(Guest guest) throws DataAccessException {
-        return null;
+        return guest;
     }
 
     @Override
     public boolean update(Guest guest) throws DataAccessException {
+        for (int i = 0; i < guests.size(); i++) {
+            if (guests.get(i).getId() == guest.getId()) {
+                return true;
+            }
+        }
         return false;
     }
 
