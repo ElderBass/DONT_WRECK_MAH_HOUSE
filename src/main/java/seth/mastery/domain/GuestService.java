@@ -50,7 +50,7 @@ public class GuestService {
         System.out.println("Guest " + added.getId() + " has been added to database.");
         return result;
     }
-    
+
     public Result update(Guest guest) throws DataAccessException {
         Result<Guest> result = validate(guest);
         if(!result.isSuccess()) {
@@ -81,7 +81,7 @@ public class GuestService {
     // VALIDATION METHODS
     // =========================================================================================================
 
-    public Result validate(Guest guest) {
+    private Result validate(Guest guest) {
         Result result = new Result();
 
         result = validateNulls(guest, result);
@@ -97,7 +97,7 @@ public class GuestService {
         return result;
     }
 
-    public Result validateNulls(Guest guest, Result result) {
+    private Result validateNulls(Guest guest, Result result) {
         if (guest == null) {
             result.addErrorMessage("Guest cannot be null.");
         }
@@ -124,29 +124,29 @@ public class GuestService {
         return result;
     }
 
-    public Result validateFields(Guest guest, Result result) {
+    private Result validateFields(Guest guest, Result result) {
 
-        if (guest.getLastName() == "") {
+        if (guest.getLastName().equals("")) {
             result.addErrorMessage("Guest last name required.");
         }
 
-        if (guest.getFirstName() == "") {
+        if (guest.getFirstName().equals("")) {
             result.addErrorMessage("Guest first name required.");
         }
 
-        if (guest.getEmail() == "") {
+        if (guest.getEmail().equals("")) {
             result.addErrorMessage("Guest email required.");
         } else if (guest.getEmail().indexOf("@") == -1) {
             result.addErrorMessage("Invalid email address.");
         }
 
-        if (guest.getPhone() == "") {
+        if (guest.getPhone().equals("")) {
             result.addErrorMessage("Guest phone number required.");
         } else if (guest.getPhone().length() != 13) {
             result.addErrorMessage("Invalid phone number.");
         }
 
-        if (guest.getState() == "") {
+        if (guest.getState().equals("")) {
             result.addErrorMessage("Guest state required.");
         } else if (guest.getState().length() != 2) {
             result.addErrorMessage("State must be in appropriate abbreviated form.");
@@ -160,7 +160,7 @@ public class GuestService {
         for (Guest g : guests) {
             if (g.getFirstName().equals(guest.getFirstName()) && g.getLastName().equals(guest.getLastName())
                     && g.getEmail().equals(guest.getEmail()) && g.getPhone().equals(guest.getPhone())
-                    && g.getPhone().equals(guest.getState())) {
+                    && g.getState().equals(guest.getState())) {
                 result.addErrorMessage("Guest already exists in database.");
             }
         }

@@ -26,7 +26,7 @@ public class HostRepositoryDouble implements HostRepository {
         host.setAddress("123 Test Ave");
         host.setCity("Testville");
         host.setState("FL");
-        host.setPostalCode(90210);
+        host.setPostalCode("90210");
         host.setStandardRate(new BigDecimal(60.0));
         host.setWeekendRate(new BigDecimal(80.0));
 
@@ -46,5 +46,20 @@ public class HostRepositoryDouble implements HostRepository {
     @Override
     public Host findByEmail(String email) {
         return null;
+    }
+
+    @Override
+    public Host add(Host host) throws DataAccessException {
+        return null;
+    }
+
+    @Override
+    public boolean update(Host host) throws DataAccessException {
+        return false;
+    }
+
+    @Override
+    public boolean delete(Host host) throws DataAccessException {
+        return false;
     }
 }
