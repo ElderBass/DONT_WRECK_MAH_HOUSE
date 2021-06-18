@@ -78,6 +78,7 @@ public class ReservationService {
         boolean isDeleted = reservationRepo.delete(reservation);
         if (!isDeleted) {
             result.addErrorMessage("Reservation " + reservation.getId() + " not in database.");
+            return result;
         }
         System.out.println();
         System.out.println("Reservation " + reservation.getId() + " has been deleted.");

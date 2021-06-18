@@ -78,6 +78,7 @@ public class HostService {
         boolean isDeleted = repository.delete(host);
         if (!isDeleted) {
             result.addErrorMessage("Host " + host.getId() + " not in database.");
+            return result;
         }
         System.out.println();
         System.out.println("Host " + host.getId() + " has been deleted.");

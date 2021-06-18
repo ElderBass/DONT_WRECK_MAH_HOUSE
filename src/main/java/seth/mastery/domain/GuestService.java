@@ -71,6 +71,7 @@ public class GuestService {
         boolean isDeleted = repository.delete(guest);
         if (!isDeleted) {
             result.addErrorMessage("Guest " + guest.getId() + " not in database.");
+            return result;
         }
         System.out.println();
         System.out.println("Guest " + guest.getId() + " has been deleted.");
