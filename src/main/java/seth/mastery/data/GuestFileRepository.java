@@ -79,6 +79,39 @@ public class GuestFileRepository implements GuestRepository {
         return guest;
     }
 
+    @Override
+    public boolean update(Guest guest) throws DataAccessException {
+        if (guest == null) {
+            return false;
+        }
+        List<Guest> guests = findAll();
+        for (int i = 0; i < guests.size(); i++) {
+            if (guests.get(i).getId() == guest.getId()) {
+                guests.set(i, guest);
+                writeAll(guests);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean delete(Guest guest) throws DataAccessException {
+        if (guest == null) {
+            return false;
+        }
+
+        List<Guest> all = findAll();
+        for (int i = 0; i < all.size(); i++) {
+            if (all.get(i).getId() == guest.getId()) {
+                all.remove(i);
+                writeAll(all);
+                return true;
+            }
+        }
+        return false;
+    }
+
     // HELPER METHODS
     // =============================================================================================================
 

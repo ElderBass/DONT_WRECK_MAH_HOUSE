@@ -62,6 +62,9 @@ public class Controller {
                 case ADD_GUEST:
                     addGuest();
                     break;
+                case EDIT_GUEST:
+                    editGuest();
+                    break;
             }
         } while (option != MenuOption.EXIT);
     }
@@ -181,6 +184,26 @@ public class Controller {
         Guest guest = view.createGuest();
         Result result = guestService.add(guest);
         view.displayResult(result);
+    }
+
+    private void editGuest() throws DataAccessException {
+        view.displayHeader(MenuOption.EDIT_GUEST.getMessage());
+
+        Result hostResult = getGuestOrHostFromEmail("Guest");
+        if (!hostResult.isSuccess()) {
+            view.displayResult(hostResult);
+            return;
+        }
+
+        Guest guest = (Guest) hostResult.getPayload();
+                Guest edited = view.editGuest(guest);
+        if (edited == null) {
+            System.out.println("Proceeding to Main Menu...");
+            System.out.println();
+            return;
+        }
+        Result<Guest> resResult = guestService.update(edited);
+        view.displayResult(resResult);
     }
 
     // HELPER METHODS

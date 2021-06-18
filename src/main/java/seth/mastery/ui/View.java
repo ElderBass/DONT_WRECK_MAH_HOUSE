@@ -34,7 +34,7 @@ public class View {
         return MenuOption.fromValue(io.readInt(message, min, max));
     }
 
-    // CRUD METHODS
+    // RESERVATION CRUD METHODS
     // ==============================================================================================
 
     public void displayReservations(List<Reservation> reservations, Host host, boolean showAll) {
@@ -126,6 +126,9 @@ public class View {
         return reservation;
     }
 
+    // GUEST CRUD METHODS
+    // =======================================================================================
+
     public Guest createGuest() {
         System.out.println("~Please fill out the following fields~");
         System.out.println();
@@ -137,6 +140,33 @@ public class View {
         System.out.println();
 
         Guest guest = new Guest(firstName, lastName, email, phone, state);
+        return guest;
+    }
+
+    public Guest editGuest(Guest guest) {
+        System.out.println("Fill out fields OR press [enter] to keep previous value.");
+        System.out.println();
+        String firstName = io.readString("First Name [" + guest.getFirstName() + "]: ");
+        if (firstName.trim().length() > 0) {
+            guest.setFirstName(firstName);
+        }
+        String lastName = io.readString("Last Name [" + guest.getLastName() + "]: ");
+        if (lastName.trim().length() > 0) {
+            guest.setLastName(firstName);
+        }
+        String email = io.readString("Email [" + guest.getEmail() + "]: ");
+        if (email.trim().length() > 0) {
+            guest.setEmail(email);
+        }
+        String phone = io.readString("Phone number [" + guest.getPhone() + "]: ");
+        if (phone.trim().length() > 0) {
+            guest.setPhone(phone);
+        }
+        String state = io.readString("State [" + guest.getState() + "]: ");
+        if (state.trim().length() > 0) {
+            guest.setState(state);
+        }
+
         return guest;
     }
 

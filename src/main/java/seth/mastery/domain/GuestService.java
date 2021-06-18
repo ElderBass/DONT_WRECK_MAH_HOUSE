@@ -5,6 +5,7 @@ import seth.mastery.data.DataAccessException;
 import seth.mastery.data.GuestRepository;
 import seth.mastery.models.Guest;
 import seth.mastery.models.Host;
+import seth.mastery.models.Reservation;
 
 import java.util.List;
 
@@ -38,10 +39,29 @@ public class GuestService {
             return result;
         }
 
+        result = validateDuplicate(guest, result);
+        if (!result.isSuccess()) {
+            return result;
+        }
+
         Guest added = repository.add(guest);
         result.setPayload(added);
 
         System.out.println("Guest " + added.getId() + " has been added to database.");
+        return result;
+    }
+    
+    public Result update(Guest guest) throws DataAccessException {
+        Result<Guest> result = validate(guest);
+        if(!result.isSuccess()) {
+            return result;
+        }
+
+        if (repository.update(guest)) {
+            result.setPayload(guest);
+        }
+        System.out.println();
+        System.out.println("Guest " + guest.getId() + " has been updated.");
         return result;
     }
 
@@ -61,10 +81,6 @@ public class GuestService {
             return result;
         }
 
-        result = validateDuplicate(guest, result);
-        if (!result.isSuccess()) {
-            return result;
-        }
         return result;
     }
 

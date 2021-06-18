@@ -14,7 +14,6 @@ public class GuestRepositoryDouble implements GuestRepository {
     private final List<Guest> guests = new ArrayList<>();
 
     public GuestRepositoryDouble() {
-
         guests.add(GUEST1);
         guests.add(GUEST2);
     }
@@ -38,6 +37,16 @@ public class GuestRepositoryDouble implements GuestRepository {
     @Override
     public Guest add(Guest guest) throws DataAccessException {
         return null;
+    }
+
+    @Override
+    public boolean update(Guest guest) throws DataAccessException {
+        return false;
+    }
+
+    @Override
+    public boolean delete(Guest guest) throws DataAccessException {
+        return false;
     }
 
     private static Guest makeGuest1() {

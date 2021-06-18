@@ -13,4 +13,8 @@ public interface GuestRepository {
     Guest findByEmail(String email);
 
     Guest add(Guest guest) throws DataAccessException;
+
+    boolean update(Guest guest) throws DataAccessException;
+
+    boolean delete(Guest guest) throws DataAccessException;
 }
