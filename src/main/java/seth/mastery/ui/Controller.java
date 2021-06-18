@@ -59,6 +59,9 @@ public class Controller {
                 case CANCEL_RESERVATION:
                     cancelReservation();
                     break;
+                case ADD_GUEST:
+                    addGuest();
+                    break;
             }
         } while (option != MenuOption.EXIT);
     }
@@ -171,6 +174,13 @@ public class Controller {
         }
         Result<Reservation> resResult = reservationService.delete(reservation);
         view.displayResult(resResult);
+    }
+
+    private void addGuest() throws DataAccessException {
+        view.displayHeader(MenuOption.ADD_GUEST.getMessage());
+        Guest guest = view.createGuest();
+        Result result = guestService.add(guest);
+        view.displayResult(result);
     }
 
     // HELPER METHODS

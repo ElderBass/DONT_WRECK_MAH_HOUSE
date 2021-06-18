@@ -30,7 +30,7 @@ public class View {
             max = Math.max(max, option.getValue());
         }
 
-        String message = String.format("Select [%s-%s]: ", min, max - 1);
+        String message = String.format("Select [%s-%s]: ", min, max);
         return MenuOption.fromValue(io.readInt(message, min, max));
     }
 
@@ -57,7 +57,12 @@ public class View {
     // Overload the above method here for displaying Reservations by Guest
     public void displayReservations(List<Reservation> reservations, Guest guest, boolean showAll) {
         displayHeader("Viewing Reservations for " + guest.getFirstName() + " " + guest.getLastName());
-        System.out.println();
+
+        if (reservations == null || reservations.isEmpty()) {
+            System.out.println("No reservations found for " + guest.getFirstName() + " " + guest.getLastName());
+            System.out.println();
+            return;
+        }
 
         for (Reservation r : reservations) {
             if (showAll) {
@@ -119,6 +124,20 @@ public class View {
             return null;
         }
         return reservation;
+    }
+
+    public Guest createGuest() {
+        System.out.println("~Please fill out the following fields~");
+        System.out.println();
+        String firstName = io.readRequiredString("Enter Guest's first name: ");
+        String lastName = io.readRequiredString("Enter Guest's last name: ");
+        String email = io.readRequiredString("Enter Guest's email: ");
+        String phone = io.readRequiredString("Enter Guest's phone number [e.g. (555) 5555555]: ");
+        String state = io.readRequiredString("Enter Guest's state abbreviation [e.g. NY]: ");
+        System.out.println();
+
+        Guest guest = new Guest(firstName, lastName, email, phone, state);
+        return guest;
     }
 
     // CONFIRMATION METHODS
@@ -198,8 +217,8 @@ public class View {
             for (String msg : result.getErrorMessages()) {
                 System.out.printf("- %s%n", msg);
                 System.out.println();
-                System.out.println("Could not perform operation. Please try again :(");
             }
+            System.out.println("Could not perform operation. Please try again :(");
         }
     }
 

@@ -23,6 +23,14 @@ public class Guest {
         this.state = state;
     }
 
+    public Guest(String firstName, String lastName, String email, String phone, String state) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+        this.state = state;
+    }
+
     public Guest(Guest guest1) {
         this.id = guest1.getId();
         this.firstName = guest1.getFirstName();

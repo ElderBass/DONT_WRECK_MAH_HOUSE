@@ -34,6 +34,12 @@ public class GuestRepositoryDouble implements GuestRepository {
         return null;
     }
 
+    // TODO Fix this before testing out Guest service
+    @Override
+    public Guest add(Guest guest) throws DataAccessException {
+        return null;
+    }
+
     private static Guest makeGuest1() {
         Guest guest = new Guest();
         guest.setId(1001);
