@@ -11,6 +11,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -20,10 +23,14 @@ import java.util.stream.Collectors;
 public class HostFileRepository implements HostRepository {
 
     private String filePath;
+    private String directory;
     private final String HEADER = "id,last_name,email,phone,address,city,state,postal_code,standard_rate,weekend_rate";
 
     @Autowired
-    public HostFileRepository(@Value("${hostFilePath}")String filePath) { this.filePath = filePath; }
+    public HostFileRepository(@Value("${reservationDirectory}") String directory, @Value("${hostFilePath}")String filePath) {
+        this.filePath = filePath;
+        this.directory = directory;
+    }
 
     @Override
     public List<Host> findAll() {
@@ -97,17 +104,17 @@ public class HostFileRepository implements HostRepository {
     }
 
     @Override
-    public boolean delete(Host host) throws DataAccessException {
+    public boolean delete(Host host) throws DataAccessException, IOException {
         if (host == null) {
             return false;
         }
 
         List<Host> all = findAll();
         for (int i = 0; i < all.size(); i++) {
-            if (all.get(i).getId() == host.getId()) {
+            if (all.get(i).getId().equals(host.getId())) {
                 all.remove(i);
                 writeAll(all);
-                return true;
+                return deleteHostFile(host.getId());
             }
         }
         return false;
@@ -156,5 +163,23 @@ public class HostFileRepository implements HostRepository {
         host.setWeekendRate(new BigDecimal(fields[9]));
 
         return host;
+    }
+
+    private boolean deleteHostFile(String id) throws IOException {
+        boolean didDelete = false;
+        try {
+            Files.deleteIfExists(Paths.get(directory, id + ".csv"));
+        } catch (NoSuchFileException e) {
+            System.out.println("No such file/directory exists" + e);
+            didDelete = false;
+        } catch (IOException e) {
+            System.out.println("Invalid permissions.");
+            didDelete = false;
+            throw new IOException(e);
+        }
+
+        System.out.println("Deletion successful.");
+        didDelete = true;
+        return didDelete;
     }
 }

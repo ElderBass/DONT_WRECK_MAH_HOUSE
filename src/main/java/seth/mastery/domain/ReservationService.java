@@ -8,6 +8,7 @@ import seth.mastery.data.ReservationRepository;
 import seth.mastery.models.Guest;
 import seth.mastery.models.Reservation;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -49,6 +50,10 @@ public class ReservationService {
         }
 
         Reservation added = reservationRepo.add(reservation);
+        if (added.getId() <= 0) {
+            result.addErrorMessage("Reservation ID must be greater than 0.");
+            return result;
+        }
         result.setPayload(added);
         System.out.println("Reservation " + reservation.getId() + " confirmed.");
         return result;

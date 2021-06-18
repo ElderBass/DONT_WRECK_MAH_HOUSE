@@ -45,6 +45,10 @@ public class GuestService {
         }
 
         Guest added = repository.add(guest);
+        if (added.getId() <= 0) {
+            result.addErrorMessage("Guest ID must be greater than 0.");
+            return result;
+        }
         result.setPayload(added);
 
         System.out.println("Guest " + added.getId() + " has been added to database.");

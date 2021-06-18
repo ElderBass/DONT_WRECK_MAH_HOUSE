@@ -11,6 +11,7 @@ import seth.mastery.models.Guest;
 import seth.mastery.models.Host;
 import seth.mastery.models.Reservation;
 
+import java.io.IOException;
 import java.util.List;
 
 @Component
@@ -33,13 +34,13 @@ public class Controller {
         view.displayHeader("Greetings, Admin, and Welcome to your Dashboard.");
         try {
             runMenuLoop();
-        } catch (DataAccessException ex) {
+        } catch (DataAccessException | IOException ex) {
             view.displayException(ex);
         }
         view.displayHeader("Goodbye, Admin.");
     }
 
-    public void runMenuLoop() throws DataAccessException {
+    public void runMenuLoop() throws DataAccessException, IOException {
         MenuOption option;
         do {
             option = view.selectMenuOption();
@@ -270,7 +271,7 @@ public class Controller {
         view.displayResult(resResult);
     }
 
-    private void deleteHost() throws DataAccessException {
+    private void deleteHost() throws IOException, DataAccessException {
         view.displayHeader(MenuOption.DELETE_HOST.getMessage());
         Result hostResult = getGuestOrHostFromEmail("Host");
         if (!hostResult.isSuccess()) {

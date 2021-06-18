@@ -197,6 +197,7 @@ class ReservationServiceTest {
     void shouldNotAddInvalidReservationId() throws DataAccessException {
         Reservation reservation = new Reservation();
 
+        reservation.setId(0);
         reservation.setHost(HostRepositoryDouble.HOST);
         reservation.setGuest(GuestRepositoryDouble.GUEST1);
         reservation.setGuestId(GuestRepositoryDouble.GUEST1.getId());
@@ -205,10 +206,6 @@ class ReservationServiceTest {
         reservation.setTotal(new BigDecimal(100.00));
 
         Result<Reservation> result = service.add(reservation);
-        assertFalse(result.isSuccess());
-
-        reservation.setId(0);
-        result = service.add(reservation);
         assertFalse(result.isSuccess());
 
         reservation.setId(-5);

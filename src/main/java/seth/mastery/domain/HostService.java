@@ -9,6 +9,7 @@ import seth.mastery.models.Host;
 import seth.mastery.models.Host;
 import seth.mastery.models.Host;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -72,7 +73,7 @@ public class HostService {
     }
 
 
-    public Result delete(Host host) throws DataAccessException {
+    public Result delete(Host host) throws DataAccessException, IOException {
         Result result = new Result();
 
         boolean isDeleted = repository.delete(host);

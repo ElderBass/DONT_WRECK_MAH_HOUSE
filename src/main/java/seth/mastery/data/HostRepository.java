@@ -2,6 +2,7 @@ package seth.mastery.data;
 
 import seth.mastery.models.Host;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface HostRepository {
@@ -11,5 +12,5 @@ public interface HostRepository {
     Host findByEmail(String email);
     Host add(Host host) throws DataAccessException;
     boolean update(Host host) throws DataAccessException;
-    boolean delete(Host host) throws DataAccessException;
+    boolean delete(Host host) throws DataAccessException, IOException;
 }

@@ -3,6 +3,7 @@ package seth.mastery.data;
 import seth.mastery.models.Guest;
 import seth.mastery.models.Reservation;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface ReservationRepository {

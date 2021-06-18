@@ -30,7 +30,7 @@ public class ReservationFileRepository implements ReservationRepository {
 
 
     @Autowired
-    public ReservationFileRepository(@Value("${reservationDirectory}")String directory, GuestFileRepository guestFileRepository, HostFileRepository hostFileRepository) {
+    public ReservationFileRepository(@Value("${reservationDirectory}") String directory, GuestFileRepository guestFileRepository, HostFileRepository hostFileRepository) {
         this.directory = directory;
         this.guestRepo = guestFileRepository;
         this.hostRepo = hostFileRepository;
@@ -69,7 +69,7 @@ public class ReservationFileRepository implements ReservationRepository {
             for (int j = 0; j < hostReservations.size(); j++) {
                 Guest g = hostReservations.get(j).getGuest();
                 if (g.getFirstName().equals(guest.getFirstName()) && g.getLastName().equals(guest.getLastName())
-                    && g.getEmail().equals(guest.getEmail()) && g.getId() == guest.getId()) {
+                        && g.getEmail().equals(guest.getEmail()) && g.getId() == guest.getId()) {
                     guestReservations.add(hostReservations.get(j));
                 }
             }
@@ -171,12 +171,12 @@ public class ReservationFileRepository implements ReservationRepository {
         result.setGuestId(Integer.parseInt(fields[3]));
         result.setTotal(new BigDecimal(fields[4]));
 
-        Guest guest = guestRepo.findById(Integer.parseInt(fields[3]));;
+        Guest guest = guestRepo.findById(Integer.parseInt(fields[3]));
+        ;
         result.setGuest(guest);
 
         Host host = hostRepo.findById(hostId);
         result.setHost(host);
         return result;
     }
-
 }
