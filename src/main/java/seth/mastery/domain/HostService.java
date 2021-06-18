@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import seth.mastery.data.DataAccessException;
 import seth.mastery.data.HostRepository;
 import seth.mastery.data.HostRepository;
+import seth.mastery.models.Guest;
 import seth.mastery.models.Host;
 import seth.mastery.models.Host;
 import seth.mastery.models.Host;
@@ -70,6 +71,19 @@ public class HostService {
         return result;
     }
 
+
+    public Result delete(Host host) throws DataAccessException {
+        Result result = new Result();
+
+        boolean isDeleted = repository.delete(host);
+        if (!isDeleted) {
+            result.addErrorMessage("Host " + host.getId() + " not in database.");
+        }
+        System.out.println();
+        System.out.println("Host " + host.getId() + " has been deleted.");
+
+        return result;
+    }
 
     // VALIDATION METHODS
     // ==========================================================================================================
