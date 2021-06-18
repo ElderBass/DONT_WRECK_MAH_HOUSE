@@ -68,6 +68,15 @@ public class Controller {
                 case DELETE_GUEST:
                     deleteGuest();
                     break;
+                case ADD_HOST:
+                    addHost();
+                    break;
+                case EDIT_HOST:
+                    editHost();
+                    break;
+                case DELETE_HOST:
+                    deleteHost();
+                    break;
             }
         } while (option != MenuOption.EXIT);
     }
@@ -225,6 +234,52 @@ public class Controller {
             return;
         }
         Result<Guest> result = guestService.delete(guest);
+        view.displayResult(result);
+    }
+
+    private void addHost() throws DataAccessException {
+        view.displayHeader(MenuOption.ADD_HOST.getMessage());
+        Host host = view.createHost();
+        Result result = hostService.add(host);
+        view.displayResult(result);
+    }
+    
+    private void editHost() throws DataAccessException {
+        view.displayHeader(MenuOption.EDIT_HOST.getMessage());
+
+        Result hostResult = getGuestOrHostFromEmail("Host");
+        if (!hostResult.isSuccess()) {
+            view.displayResult(hostResult);
+            return;
+        }
+
+        Host host = (Host) hostResult.getPayload();
+        Host edited = view.editHost(host);
+        if (edited == null) {
+            System.out.println("Proceeding to Main Menu...");
+            System.out.println();
+            return;
+        }
+        Result<Host> resResult = hostService.update(edited);
+        view.displayResult(resResult);
+    }
+
+    private void deleteHost() throws DataAccessException {
+        view.displayHeader(MenuOption.DELETE_HOST.getMessage());
+        Result hostResult = getGuestOrHostFromEmail("Host");
+        if (!hostResult.isSuccess()) {
+            view.displayResult(hostResult);
+            return;
+        }
+
+        Host host = (Host) hostResult.getPayload();
+        Host deleted = view.deleteHost(host);
+        if (deleted == null) {
+            System.out.println("Proceeding to Main Menu...");
+            System.out.println();
+            return;
+        }
+        Result<Host> result = hostService.delete(host);
         view.displayResult(result);
     }
 

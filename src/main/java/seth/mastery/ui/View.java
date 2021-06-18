@@ -6,6 +6,7 @@ import seth.mastery.models.Guest;
 import seth.mastery.models.Host;
 import seth.mastery.models.Reservation;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -152,7 +153,7 @@ public class View {
         }
         String lastName = io.readString("Last Name [" + guest.getLastName() + "]: ");
         if (lastName.trim().length() > 0) {
-            guest.setLastName(firstName);
+            guest.setLastName(lastName);
         }
         String email = io.readString("Email [" + guest.getEmail() + "]: ");
         if (email.trim().length() > 0) {
@@ -187,6 +188,96 @@ public class View {
         }
         return guest;
     }
+    
+    public Host createHost() {
+
+        System.out.println("~Please fill out the following fields~");
+        System.out.println();
+
+        String lastName = io.readRequiredString("Enter Host's last name: ");
+        String email = io.readRequiredString("Enter Host's email: ");
+        String phone = io.readRequiredString("Enter Host's phone number [e.g. (555) 5555555]: ");
+        String address = io.readRequiredString("Enter Host's address: ");
+        String city = io.readRequiredString("Enter Host's city: ");
+        String state = io.readRequiredString("Enter Host's state abbreviation [e.g. NY]: ");
+        String postalCode = io.readRequiredString("Enter Host's postal code: ");
+        BigDecimal standardRate = io.readBigDecimal("Enter Standard Rate: ", new BigDecimal(0), new BigDecimal(10000));
+        BigDecimal weekendRate = io.readBigDecimal("Enter Weekend Rate: ", new BigDecimal(0), new BigDecimal(20000));
+        System.out.println();
+
+        Host host = new Host(lastName, email, phone, address, city, state, postalCode, standardRate, weekendRate);
+        return host;
+    }
+
+    public Host editHost(Host host) {
+        System.out.println("Fill out fields OR press [enter] to keep previous value.");
+        System.out.println();
+
+        String lastName = io.readString("Last Name [" + host.getLastName() + "]: ");
+        if (lastName.trim().length() > 0) {
+            host.setLastName(lastName);
+        }
+        String email = io.readString("Email [" + host.getEmail() + "]: ");
+        if (email.trim().length() > 0) {
+            host.setEmail(email);
+        }
+        String phone = io.readString("Phone number [" + host.getPhone() + "]: ");
+        if (phone.trim().length() > 0) {
+            host.setPhone(phone);
+        }
+        String address = io.readString("Address [" + host.getAddress() + "]: ");
+        if (address.trim().length() > 0) {
+            host.setAddress(address);
+        }
+        String city = io.readString("City [" + host.getCity() + "]: ");
+        if (city.trim().length() > 0) {
+            host.setCity(city);
+        }
+        String state = io.readString("State [" + host.getState() + "]: ");
+        if (state.trim().length() > 0) {
+            host.setState(state);
+        }
+        String postalCode = io.readString("State [" + host.getPostalCode() + "]: ");
+        if (postalCode.trim().length() > 0) {
+            host.setPostalCode(postalCode);
+        }
+        String standard = io.readString("Standard Rate [" + host.getStandardRate() + "]: ");
+        if (standard.trim().length() > 0) {
+            host.setStandardRate(convertStringToBigDecimal(standard));
+        }
+        String weekend = io.readString("Weekend Rate [" + host.getWeekendRate() + "]: ");
+        if (weekend.trim().length() > 0) {
+            host.setWeekendRate(convertStringToBigDecimal(weekend));
+        }
+
+        return host;
+    }
+    
+    public Host deleteHost(Host host) {
+        displayHeader("Confirm Deletion");
+        System.out.printf("ID: %s | Name: %s | Email: %s | Phone: %s \n" +
+                        " Address: %s | City: %s | State: %s | Postal Code: %s \n" +
+                        "Standard Rate: %s | Weekend Rate: %s",
+                host.getId(),
+                host.getLastName(),
+                host.getEmail(),
+                host.getPhone(),
+                host.getAddress(),
+                host.getCity(),
+                host.getState(),
+                host.getPostalCode(),
+                host.getStandardRate(),
+                host.getWeekendRate());
+        System.out.println();
+        boolean confirmDelete = io.readBoolean("Delete this Host from Database? [y/n]: ");
+
+        if (!confirmDelete) {
+            System.out.println("Host " + host.getId() + " will remain in Database.");
+            return null;
+        }
+        return host;
+    }
+    
 
     // CONFIRMATION METHODS
     // ==============================================================================================
@@ -275,5 +366,10 @@ public class View {
     }
 
     private String convertDateFormat(LocalDate date) { return dtf.format(date); }
+    
+    private BigDecimal convertStringToBigDecimal(String rate) {
+        double doubleRate = Double.parseDouble(rate);
+        return new BigDecimal(doubleRate);
+    }
 
 }
