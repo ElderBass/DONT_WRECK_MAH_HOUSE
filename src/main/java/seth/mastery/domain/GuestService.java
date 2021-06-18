@@ -65,6 +65,19 @@ public class GuestService {
         return result;
     }
 
+    public Result delete(Guest guest) throws DataAccessException {
+        Result result = new Result();
+
+        boolean isDeleted = repository.delete(guest);
+        if (!isDeleted) {
+            result.addErrorMessage("Guest " + guest.getId() + " not in database.");
+        }
+        System.out.println();
+        System.out.println("Guest " + guest.getId() + " has been deleted.");
+
+        return result;
+    }
+
     // VALIDATION METHODS
     // =========================================================================================================
 

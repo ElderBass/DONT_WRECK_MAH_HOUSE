@@ -170,6 +170,24 @@ public class View {
         return guest;
     }
 
+    public Guest deleteGuest(Guest guest) {
+        displayHeader("Confirm Deletion");
+        System.out.printf("ID: %s | Name: %s, %s | Email: %s | Phone: %s | State: %s",
+                guest.getId(),
+                guest.getLastName(), guest.getFirstName(),
+                guest.getEmail(),
+                guest.getPhone(),
+                guest.getState());
+        System.out.println();
+        boolean confirmDelete = io.readBoolean("Delete this Guest from Database? [y/n]: ");
+
+        if (!confirmDelete) {
+            System.out.println(guest.getFirstName() + " " + guest.getLastName() + " will remain in Database.");
+            return null;
+        }
+        return guest;
+    }
+
     // CONFIRMATION METHODS
     // ==============================================================================================
 

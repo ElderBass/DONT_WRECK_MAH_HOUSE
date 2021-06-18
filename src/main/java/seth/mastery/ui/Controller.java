@@ -65,6 +65,9 @@ public class Controller {
                 case EDIT_GUEST:
                     editGuest();
                     break;
+                case DELETE_GUEST:
+                    deleteGuest();
+                    break;
             }
         } while (option != MenuOption.EXIT);
     }
@@ -204,6 +207,25 @@ public class Controller {
         }
         Result<Guest> resResult = guestService.update(edited);
         view.displayResult(resResult);
+    }
+
+    private void deleteGuest() throws DataAccessException {
+        view.displayHeader(MenuOption.DELETE_GUEST.getMessage());
+        Result guestResult = getGuestOrHostFromEmail("Guest");
+        if (!guestResult.isSuccess()) {
+            view.displayResult(guestResult);
+            return;
+        }
+
+        Guest guest = (Guest) guestResult.getPayload();
+        Guest deleted = view.deleteGuest(guest);
+        if (deleted == null) {
+            System.out.println("Proceeding to Main Menu...");
+            System.out.println();
+            return;
+        }
+        Result<Guest> result = guestService.delete(guest);
+        view.displayResult(result);
     }
 
     // HELPER METHODS
