@@ -135,7 +135,7 @@ public class GuestFileRepository implements GuestRepository {
     }
 
     private String serialize(Guest g) {
-    // guest_id,first_name,last_name,email,phone,state
+
         return String.format("%s,%s,%s,%s,%s,%s",
                 g.getId(),
                 g.getFirstName(),

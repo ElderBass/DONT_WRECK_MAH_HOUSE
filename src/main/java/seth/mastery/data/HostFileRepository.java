@@ -3,11 +3,13 @@ package seth.mastery.data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
+import seth.mastery.models.Guest;
 import seth.mastery.models.Host;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 public class HostFileRepository implements HostRepository {
 
     private String filePath;
+    private final String HEADER = "id,last_name,email,phone,address,city,state,postal_code,standard_rate,weekend_rate";
 
     @Autowired
     public HostFileRepository(@Value("${hostFilePath}")String filePath) { this.filePath = filePath; }
@@ -40,9 +43,9 @@ public class HostFileRepository implements HostRepository {
             // don't throw on read
         }
 
-//        result = result.stream()
-//                .sorted(Comparator.comparing(Host::getLastName))
-//                .collect(Collectors.toList());
+        result = result.stream()
+                .sorted(Comparator.comparing(Host::getLastName))
+                .collect(Collectors.toList());
         return result;
     }
 
@@ -66,6 +69,76 @@ public class HostFileRepository implements HostRepository {
             }
         }
         return null;
+    }
+
+    @Override
+    public Host add(Host host) throws DataAccessException {
+        List<Host> hosts = findAll();
+        host.setId(java.util.UUID.randomUUID().toString());
+        hosts.add(host);
+        writeAll(hosts);
+        return host;
+    }
+
+    @Override
+    public boolean update(Host host) throws DataAccessException {
+        if (host == null) {
+            return false;
+        }
+        List<Host> hosts = findAll();
+        for (int i = 0; i < hosts.size(); i++) {
+            if (hosts.get(i).getId() == host.getId()) {
+                hosts.set(i, host);
+                writeAll(hosts);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean delete(Host host) throws DataAccessException {
+        if (host == null) {
+            return false;
+        }
+
+        List<Host> all = findAll();
+        for (int i = 0; i < all.size(); i++) {
+            if (all.get(i).getId() == host.getId()) {
+                all.remove(i);
+                writeAll(all);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // HELPER METHODS
+    // =========================================================================================================
+
+    private void writeAll(List<Host> hosts) throws DataAccessException {
+        try (PrintWriter writer = new PrintWriter(filePath)) {
+            writer.println(HEADER);
+            for (Host h : hosts) {
+                writer.println(serialize(h));
+            }
+        } catch (IOException ex) {
+            throw new DataAccessException(ex.getMessage(), ex);
+        }
+    }
+
+    private String serialize(Host h) {
+        return String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
+                h.getId(),
+                h.getLastName(),
+                h.getEmail(),
+                h.getPhone(),
+                h.getAddress(),
+                h.getCity(),
+                h.getState(),
+                h.getPostalCode(),
+                h.getStandardRate(),
+                h.getWeekendRate());
     }
 
     private Host deserialize(String[] fields) {

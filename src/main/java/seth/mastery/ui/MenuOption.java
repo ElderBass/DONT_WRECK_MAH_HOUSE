@@ -10,7 +10,10 @@ public enum MenuOption {
     CANCEL_RESERVATION(5, "Cancel a Reservation"),
     ADD_GUEST(6, "Add a new Guest"),
     EDIT_GUEST(7, "Edit a Guest's Information"),
-    DELETE_GUEST(8, "Delete a Guest");
+    DELETE_GUEST(8, "Delete a Guest"),
+    ADD_HOST(9, "Add a new Host"),
+    EDIT_HOST(10, "Edit a Host's Information"),
+    DELETE_HOST(11, "Delete a Host");
 
     private int value;
     private String message;
