@@ -64,7 +64,7 @@ public class GuestRepositoryDouble implements GuestRepository {
         guest.setFirstName("Charlton");
         guest.setLastName("Teston");
         guest.setEmail("chuckT@mail.com");
-        guest.setPhone("(420) 6969");
+        guest.setPhone("(420) 0246969");
         guest.setState("TX");
 
         return guest;
@@ -76,7 +76,7 @@ public class GuestRepositoryDouble implements GuestRepository {
         guest.setFirstName("Sir Charles");
         guest.setLastName("Tendieman");
         guest.setEmail("tendies@mail.com");
-        guest.setPhone("(420) 6996");
+        guest.setPhone("(420) 5556996");
         guest.setState("FL");
 
         return guest;

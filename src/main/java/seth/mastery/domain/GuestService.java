@@ -61,9 +61,11 @@ public class GuestService {
             return result;
         }
 
-        if (repository.update(guest)) {
-            result.setPayload(guest);
+        if (!repository.update(guest)) {
+            result.addErrorMessage("Could not find Guest " + guest.getFirstName() + " " + guest.getFirstName() + " in database.");
+            return result;
         }
+        result.setPayload(guest);
         System.out.println();
         System.out.println("Guest " + guest.getId() + " has been updated.");
         return result;

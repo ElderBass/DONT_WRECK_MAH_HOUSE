@@ -11,9 +11,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class GuestServiceTest {
 
     private GuestService service;
+    private Guest GUEST1;
 
     @BeforeEach
     void setUp() {
+        GUEST1 = new Guest(GuestRepositoryDouble.GUEST1);
         service = new GuestService(new GuestRepositoryDouble());
     }
 
@@ -155,6 +157,36 @@ class GuestServiceTest {
         guest.setState("FL");
 
         Result result = service.add(guest);
+        assertFalse(result.isSuccess());
+    }
+
+    @Test
+    void shouldUpdate() throws DataAccessException {
+        GUEST1.setLastName("Tendieman Esquire");
+        Result result = service.update(GUEST1);
+
+        assertTrue(result.isSuccess());
+    }
+
+    @Test
+    void shouldNotUpdateNonExistentGuest() throws DataAccessException {
+        Guest triss = new Guest(1003, "Triss", "Merigold", "marrygold@gmail.com", "(666) 6578905", "TM");
+
+        Result result = service.update(triss);
+        assertFalse(result.isSuccess());
+    }
+
+    @Test
+    void shouldDelete() throws DataAccessException {
+        Result result = service.delete(GUEST1);
+        assertTrue(result.isSuccess());
+    }
+
+    @Test
+    void shouldNotDeleteNonexistentGuest() throws DataAccessException {
+        Guest triss = new Guest(1003, "Triss", "Merigold", "marrygold@gmail.com", "(666) 6578905", "TM");
+
+        Result result = service.delete(triss);
         assertFalse(result.isSuccess());
     }
 
