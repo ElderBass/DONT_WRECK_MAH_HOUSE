@@ -33,7 +33,6 @@ public class Host {
     }
 
     public Host(String lastName, String email, String phone, String address, String city, String state, String postalCode, BigDecimal standardRate, BigDecimal weekendRate) {
-        this.id = id;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
@@ -43,6 +42,19 @@ public class Host {
         this.postalCode = postalCode;
         this.standardRate = standardRate;
         this.weekendRate = weekendRate;
+    }
+
+    public Host(Host host) {
+        this.id = host.getId();
+        this.lastName = host.getLastName();
+        this.email = host.getEmail();
+        this.phone = host.getPhone();
+        this.address = host.getAddress();
+        this.city = host.getCity();
+        this.state = host.getState();
+        this.postalCode = host.getPostalCode();
+        this.standardRate = host.getStandardRate();
+        this.weekendRate = host.getWeekendRate();
     }
 
     public String getId() {

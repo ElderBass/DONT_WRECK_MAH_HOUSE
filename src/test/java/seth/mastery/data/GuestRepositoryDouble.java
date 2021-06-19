@@ -33,7 +33,6 @@ public class GuestRepositoryDouble implements GuestRepository {
         return null;
     }
 
-    // TODO Fix this before testing out Guest service
     @Override
     public Guest add(Guest guest) throws DataAccessException {
         return guest;
