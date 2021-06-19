@@ -55,6 +55,7 @@ public class ReservationService {
             return result;
         }
         result.setPayload(added);
+        System.out.println();
         System.out.println("Reservation " + reservation.getId() + " confirmed.");
         return result;
     }
@@ -100,15 +101,16 @@ public class ReservationService {
             return result;
         }
 
+        result = validateDates(reservation, result);
+        if (!result.isSuccess()) {
+            return result;
+        }
+
         result = validateFields(reservation, result);
         if (!result.isSuccess()) {
             return result;
         }
 
-        result = validateDates(reservation, result);
-        if (!result.isSuccess()) {
-            return result;
-        }
         return result;
     }
 
