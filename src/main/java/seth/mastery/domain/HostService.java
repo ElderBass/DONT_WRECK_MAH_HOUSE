@@ -64,9 +64,11 @@ public class HostService {
             return result;
         }
 
-        if (repository.update(host)) {
-            result.setPayload(host);
+        if (!repository.update(host)) {
+            result.addErrorMessage("Could not find Host " + host.getId() + ".");
+            return result;
         }
+        result.setPayload(host);
         System.out.println();
         System.out.println("Host " + host.getId() + " has been updated.");
         return result;

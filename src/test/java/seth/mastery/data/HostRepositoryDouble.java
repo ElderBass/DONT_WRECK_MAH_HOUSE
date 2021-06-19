@@ -56,7 +56,7 @@ public class HostRepositoryDouble implements HostRepository {
     @Override
     public boolean update(Host host) throws DataAccessException {
         for (int i = 0; i < hosts.size(); i++) {
-            if (hosts.get(i).getId() == host.getId()) {
+            if (hosts.get(i).getId().equals(host.getId())) {
                 return true;
             }
         }
@@ -65,6 +65,11 @@ public class HostRepositoryDouble implements HostRepository {
 
     @Override
     public boolean delete(Host host) throws DataAccessException {
+        for (int i = 0; i < hosts.size(); i++) {
+            if (hosts.get(i).getId().equals(host.getId())) {
+                return true;
+            }
+        }
         return false;
     }
 }

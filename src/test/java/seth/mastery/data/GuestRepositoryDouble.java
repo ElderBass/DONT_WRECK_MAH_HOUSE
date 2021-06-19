@@ -50,6 +50,11 @@ public class GuestRepositoryDouble implements GuestRepository {
 
     @Override
     public boolean delete(Guest guest) throws DataAccessException {
+        for (int i = 0; i < guests.size(); i++) {
+            if (guests.get(i).getId() == guest.getId()) {
+                return true;
+            }
+        }
         return false;
     }
 

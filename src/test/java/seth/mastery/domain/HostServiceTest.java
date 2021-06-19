@@ -8,6 +8,7 @@ import seth.mastery.data.HostRepositoryDouble;
 import seth.mastery.models.Guest;
 import seth.mastery.models.Host;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -125,4 +126,27 @@ class HostServiceTest {
         assertEquals("Heston", HOST.getLastName());
     }
 
+    @Test
+    void shouldNotUpdateNonexistentHost() throws DataAccessException {
+        Host host = new Host("659604db-b6d6-4599-a503-3d8190fda659", "Zissou", "life_aquatic@gmail.com", "(333) 3425678",
+                "123 Submarine Village","Naples", "IT", "80031", new BigDecimal(200), new BigDecimal(300));
+
+        Result result = service.update(host);
+        assertFalse(result.isSuccess());
+    }
+
+    @Test
+    void shouldDelete() throws DataAccessException, IOException {
+        Result result = service.delete(HOST);
+        assertTrue(result.isSuccess());
+    }
+
+    @Test
+    void shouldNotDeleteNonExistentHost() throws DataAccessException, IOException {
+        Host host = new Host("659604db-b6d6-4599-a503-3d8190fda659", "Zissou", "life_aquatic@gmail.com", "(333) 3425678",
+                "123 Submarine Village","Naples", "IT", "80031", new BigDecimal(200), new BigDecimal(300));
+
+        Result result = service.delete(host);
+        assertFalse(result.isSuccess());
+    }
 }
