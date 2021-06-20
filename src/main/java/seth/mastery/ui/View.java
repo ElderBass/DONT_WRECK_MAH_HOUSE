@@ -104,6 +104,9 @@ public class View {
 
     public Reservation editReservation(List<Reservation> reservations, Host host) {
         Reservation reservation = getReservationSelection(reservations, host);
+        if (reservation == null) {
+            return null;
+        }
 
         LocalDate start = io.readLocalDate("Enter Start Date [" + convertDateFormat(reservation.getStartDate()) + "]: ", false);
         if (start != null) {
@@ -124,6 +127,9 @@ public class View {
 
     public Reservation cancelReservation(List<Reservation> reservations, Host host) {
         Reservation reservation = getReservationSelection(reservations, host);
+        if (reservation == null) {
+            return null;
+        }
         if (!confirmReservationCancellation(reservation)) {
             System.out.println();
             System.out.println("Reservation still booked.");
@@ -193,6 +199,9 @@ public class View {
         }
         return guest;
     }
+
+    // HOST CRUD METHODS
+    // =======================================================================================
     
     public Host createHost() {
 
@@ -320,6 +329,9 @@ public class View {
 
     private Reservation getReservationSelection(List<Reservation> reservations, Host host) {
         displayReservations(reservations, host, false);
+        if (reservations.isEmpty()) {
+            return null;
+        }
         int reservationId = io.readInt("Enter Reservation ID Number: ", 1, reservations.size());
 
         Reservation reservation = null;
