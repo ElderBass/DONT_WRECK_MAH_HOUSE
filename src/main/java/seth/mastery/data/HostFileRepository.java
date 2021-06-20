@@ -94,7 +94,7 @@ public class HostFileRepository implements HostRepository {
         }
         List<Host> hosts = findAll();
         for (int i = 0; i < hosts.size(); i++) {
-            if (hosts.get(i).getId() == host.getId()) {
+            if (hosts.get(i).getId().equals(host.getId())) {
                 hosts.set(i, host);
                 writeAll(hosts);
                 return true;
